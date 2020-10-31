@@ -16,7 +16,7 @@ jobs:
           command: npm install --save-dev firebase-tools
       - run:
           name: 'Deploy to Hosting'
-          command: ./node_modules/.bin/firebase deploy --token="$FIREBASE_TOKEN"
+          command: firebase deploy --project "$FIREBASE_PROJECT_ID" --token="$FIREBASE_TOKEN"
 workflows:
   version: 2
   build_and_deploy:
