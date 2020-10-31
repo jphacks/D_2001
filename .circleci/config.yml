@@ -15,6 +15,9 @@ jobs:
           name: 'Install Firebase CLI'
           command: npm install --save-dev firebase-tools
       - run:
+          name: 'Run build'
+          command: npm run build
+      - run:
           name: 'Deploy to Hosting'
           command: ./node_modules/.bin/firebase deploy --project "$FIREBASE_PROJECT_ID" --token="$FIREBASE_TOKEN"
 workflows:
