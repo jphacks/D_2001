@@ -9,6 +9,9 @@
       <input v-model="option.text" placeholder="選択肢">
     </div>
     <button v-on:click="addOption">+</button>
+    <br>
+    <button v-on:click="cancel">キャンセル</button>
+    <button v-on:click="post">投稿</button>
   </div>
 </template>
 
@@ -27,6 +30,12 @@ export default {
       }
       this.optionList.push(option);
       console.log(this.optionList);
+    },
+    cancel() {
+      console.log("キャンセルしました")
+    },
+    post() {
+      console.log("投稿しました")
     }
   }
 }
