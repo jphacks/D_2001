@@ -8,7 +8,7 @@ jobs:
           name: 'npm version check'
           command: npm --version
       - run:
-          name: 'Node.js version check'          
+          name: 'Node.js version check'
           command: node --version
       - checkout
       - run:
@@ -16,7 +16,7 @@ jobs:
           command: npm install --save-dev firebase-tools
       - run:
           name: 'Deploy to Hosting'
-          command: ./node_modules/.bin/firebase deploy --project staging
+          command: ./node_modules/.bin/firebase deploy --token="$FIREBASE_TOKEN"
 workflows:
   version: 2
   build_and_deploy:
