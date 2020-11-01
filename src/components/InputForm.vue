@@ -38,11 +38,15 @@ export default {
       console.log("キャンセルしました")
     },
     post() {
-      //firestoreにタイトルと詳細をpushする
-      db.collection('Questions').add({
-        title : this.title,
-        descrption : this.descrption
-      })
+      if(this.title != "" && this.descrption != ""){
+        //firestoreにタイトルと詳細をpushする
+        db.collection('Questions').add({
+          title : this.title,
+          descrption : this.descrption
+        })
+      } else {
+        alert("タイトルまたは詳細が空欄です.")
+      }
     }
   }
 }
