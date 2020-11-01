@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import InputForm from '../components/InputForm'
-import QuestionsList from '../components/QuestionsList'
+import HomePage from '../components/HomePage'
+import PostPage from '../components/PostPage'
 
 Vue.use(Router)
 
@@ -11,13 +11,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'InputForm',
-      component: InputForm
+      name: 'HomePage',
+      component: HomePage
     },
     {
-      path: '/page2',
-      name: 'QuestionsList',
-      component: QuestionsList
+      path: '/post',
+      name: 'PostPage',
+      component: PostPage
     }
   ]
 })

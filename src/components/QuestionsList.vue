@@ -1,6 +1,9 @@
 <template>
 <div>
-  <button v-on:click="getQuestions">取得</button>
+  <router-link to="/post">
+    <button>投稿</button>
+  </router-link>
+  <br>
   <table class="table table-bordered table-hover">
       <tr v-for="(question, index) in questions" v-bind:key="index">
           <td v-text="question.title"></td>
@@ -19,9 +22,9 @@ export default {
       questions: [],
     }
   },
-  methods:{
-    getQuestions: function(){
-      var ref = db.collection('Questions').orderBy('title')
+  mounted: function(){
+    //マウント時に投稿一覧を取得する
+    var ref = db.collection('Questions').orderBy('title')
       ref.get()
         .then(snapshot => {
           if (snapshot.empty) {
@@ -41,7 +44,6 @@ export default {
         .catch(err => {
           console.log('Error getting documents', err);
         });
-    }
   },
 }
 </script>
