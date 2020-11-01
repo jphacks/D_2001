@@ -38,12 +38,39 @@ export default {
       console.log("キャンセルしました")
     },
     post() {
+      var optionList = this.optionList
       if(this.title != "" && this.descrption != ""){
         //firestoreにタイトルと詳細をpushする
         db.collection('Questions').add({
           title : this.title,
           descrption : this.descrption
         })
+        .then(function() {
+            console.log("Document successfully written!");
+        })
+        .catch(function(error) {
+            console.error("Error writing document: ", error);
+        });
+        db.collection("Questions").where("title", "==", this.title).where("descrption", "==", this.descrption)
+        .get()
+        .then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
+              console.log(doc.id);
+              optionList.forEach(function( value ) {
+                db.collection("Questions").doc(doc.id).collection("Answers").add({
+                  content : value
+                })
+                console.log(value);
+              })
+            });
+        })
+        .then(function() {
+            console.log("Answer successfully written!");
+        })
+        .catch(function(error) {
+            console.log("Error getting documents: ", error);
+        });
+
       } else {
         alert("タイトルまたは詳細が空欄です.")
       }
