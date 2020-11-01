@@ -1,9 +1,9 @@
 <template>
   <div class="input-form">
     <p>タイトル</p>
-      <input placeholder="タイトル">
+      <input placeholder="タイトル" v-model="title">
     <p>詳細</p>
-      <textarea placeholder="説明を記入してください"></textarea>
+      <textarea placeholder="説明を記入してください" v-model="description"></textarea>
     <p>選択肢</p>
     <div v-for="(option,index) in optionList" :key="index" class="option">
       <input v-model="option.text" placeholder="選択肢">
@@ -11,16 +11,21 @@
     <button v-on:click="addOption">+</button>
     <br>
     <button v-on:click="cancel">キャンセル</button>
-    <button v-on:click="post">投稿</button>
+    <router-link to="/">
+      <button v-on:click="post">投稿</button>
+    </router-link>
   </div>
 </template>
 
 <script>
+import {db} from '../plugins/firebase';
 export default {
   name: 'InputForm',
-  data() {
+  data: function() {
     return {
-      optionList: []
+      optionList: [],
+      title: "",
+      description: ""
     };
   },
   methods: {
@@ -35,7 +40,42 @@ export default {
       console.log("キャンセルしました")
     },
     post() {
-      console.log("投稿しました")
+      var optionList = this.optionList
+      if(this.title != "" && this.description != ""){
+        //firestoreにタイトルと詳細をpushする
+        db.collection('Questions').add({
+          title : this.title,
+          description : this.description
+        })
+        .then(function() {
+            console.log("Document successfully written!");
+        })
+        .catch(function(error) {
+            console.error("Error writing document: ", error);
+        });
+        db.collection("Questions").where("title", "==", this.title).where("description", "==", this.description)
+        .get()
+        .then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
+              console.log(doc.id);
+              optionList.forEach(function( value ) {
+                db.collection("Questions").doc(doc.id).collection("Answers").add({
+                  content : value
+                })
+                console.log(value);
+              })
+            });
+        })
+        .then(function() {
+            console.log("Answer successfully written!");
+        })
+        .catch(function(error) {
+            console.log("Error getting documents: ", error);
+        });
+
+      } else {
+        alert("タイトルまたは詳細が空欄です.")
+      }
     }
   }
 }

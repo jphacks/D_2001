@@ -1,22 +1,15 @@
 <template>
   <div id="app">
-    <CustomHeader/>
-    <div id="contents-container">
-      <InputForm/>
-    </div>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import CustomHeader from './components/CustomHeader.vue'
-import InputForm from './components/InputForm.vue'
+import router from './router'
 
 export default {
   name: 'App',
-  components: {
-    CustomHeader,
-    InputForm,
-  }
+  router,
 }
 </script>
 
