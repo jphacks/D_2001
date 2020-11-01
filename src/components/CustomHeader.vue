@@ -1,8 +1,8 @@
 <template>
   <div id="header" v-if="!loading">
-    <button v-on:click="login" v-if="!isUserExist">login</button>
-    <button v-on:click="logout">logout</button>
-    <div v-if="isUserExist">
+    <button v-on:click="login" v-if="!isUserExist" class="btn btn-primary">login</button>
+    <button v-on:click="logout" class="btn btn-primary">logout</button>
+    <div v-if="isUserExist" class="h1">
       <p> {{ userName }} </p>
     </div>
   </div>
