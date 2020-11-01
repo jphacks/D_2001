@@ -5,17 +5,11 @@
 </template>
 
 <script>
-// import CustomHeader from './components/CustomHeader.vue'
-// import InputForm from './components/InputForm.vue'
 import router from './router'
 
 export default {
   name: 'App',
   router,
-  // components: {
-  //   CustomHeader,
-  //   InputForm,
-  // }
 }
 </script>
 

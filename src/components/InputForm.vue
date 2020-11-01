@@ -3,7 +3,7 @@
     <p>タイトル</p>
       <input placeholder="タイトル" v-model="title">
     <p>詳細</p>
-      <textarea placeholder="説明を記入してください" v-model="descrption"></textarea>
+      <textarea placeholder="説明を記入してください" v-model="description"></textarea>
     <p>選択肢</p>
     <div v-for="(option,index) in optionList" :key="index" class="option">
       <input v-model="option.text" placeholder="選択肢">
@@ -23,7 +23,7 @@ export default {
     return {
       optionList: [],
       title: "",
-      descrption: ""
+      description: ""
     };
   },
   methods: {
@@ -39,11 +39,11 @@ export default {
     },
     post() {
       var optionList = this.optionList
-      if(this.title != "" && this.descrption != ""){
+      if(this.title != "" && this.description != ""){
         //firestoreにタイトルと詳細をpushする
         db.collection('Questions').add({
           title : this.title,
-          descrption : this.descrption
+          description : this.description
         })
         .then(function() {
             console.log("Document successfully written!");
@@ -51,7 +51,7 @@ export default {
         .catch(function(error) {
             console.error("Error writing document: ", error);
         });
-        db.collection("Questions").where("title", "==", this.title).where("descrption", "==", this.descrption)
+        db.collection("Questions").where("title", "==", this.title).where("description", "==", this.description)
         .get()
         .then(function(querySnapshot) {
             querySnapshot.forEach(function(doc) {
