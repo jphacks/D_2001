@@ -2,6 +2,7 @@
   <div id="header" v-if="!loading">
     <button v-on:click="login" v-if="!isUserExist">login</button>
     <button v-on:click="logout">logout</button>
+    <!-- <router-link to="/page2">Go to page2</router-link> -->
     <div v-if="isUserExist">
       <p> {{ userName }} </p>
     </div>
