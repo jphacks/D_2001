@@ -11,13 +11,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'InputForm',
-      component: InputForm
-    },
-    {
-      path: '/page2',
       name: 'QuestionsList',
       component: QuestionsList
+    },
+    {
+      path: '/post',
+      name: 'InputForm',
+      component: InputForm
     }
   ]
 })

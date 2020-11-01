@@ -1,5 +1,9 @@
 <template>
 <div>
+  <router-link to="/post">
+    <button>投稿</button>
+  </router-link>
+  <br>
   <button v-on:click="getQuestions">取得</button>
   <table class="table table-bordered table-hover">
       <tr v-for="(question, index) in questions" v-bind:key="index">
