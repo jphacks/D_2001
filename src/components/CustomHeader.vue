@@ -1,8 +1,6 @@
 <template>
   <div id="header">
     <button v-on:click="login">login</button>
-    <!-- <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/> -->
   </div>
 </template>
 
@@ -11,6 +9,12 @@ import firebase from 'firebase/app';
 import 'firebase/auth'
 export default {
   name: 'CustomHeader',
+  created: function(){
+    var user = firebase.auth().currentUser;
+    if (user != null) {
+      console.log("ログイン済み "+user.displayName)
+    }
+  },
   methods:{
     login: function(){
       console.log("login")
@@ -20,7 +24,7 @@ export default {
         // var token = result.credential.accessToken;
         // The signed-in user info.
         var user = result.user;
-        console.log(user)
+        console.log(user.displayName)
         // ...
       }).catch(function() {
         // Handle Errors here.
@@ -32,7 +36,7 @@ export default {
         // var credential = error.credential;
         // ...
       });
-    }
+    },
   }
 }
 </script>
