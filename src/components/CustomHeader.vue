@@ -1,9 +1,16 @@
 <template>
-  <div id="header" v-if="!loading">
-    <button v-on:click="login" v-if="!isUserExist" class="btn btn-primary">login</button>
-    <button v-on:click="logout" class="btn btn-primary">logout</button>
-    <div v-if="isUserExist" class="h1">
-      <p> {{ userName }} </p>
+  <div id="header-container">
+    <div id="header" v-if="!loading">
+      <div id="icon-container">
+        <div id="icon">name_it</div>
+      </div>
+      <div id="user-container">
+        <button v-on:click="login" v-if="!isUserExist" class="btn btn-primary" id="login-btn">login</button>
+        <div v-if="isUserExist" class="h1">
+          <p> {{ userName }} </p>
+        </div> 
+        <button v-on:click="logout" class="btn btn-primary">logout</button> 
+      </div>
     </div>
   </div>
 </template>
@@ -66,3 +73,45 @@ export default {
   },
 }
 </script>
+
+<style>
+#header-container {
+  background-color: #2d3047;
+  color: #ffffff;
+}
+
+#header {
+  display: flex;
+  justify-content: space-between;
+  height: 64px;
+  max-width: 1140px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#icon-container {
+  width: 500px;
+}
+
+#icon {
+  height: 100%;
+  font-size: 30px;
+  font-weight: bold;
+  padding-top: 5px;
+}
+
+#user-container {
+  width: 300px;
+  display: flex;
+  justify-content: flex-end;
+  margin: 5px 30px 5px 0px;
+}
+
+#user-container > * {
+  margin: 0 10px;
+}
+
+.btn {
+  margin: 5px 0;
+}
+</style>
