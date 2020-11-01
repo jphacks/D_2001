@@ -76,6 +76,10 @@ export default {
 
 <style>
 #header-container {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
   background-color: #2d3047;
   color: #ffffff;
 }
@@ -83,8 +87,8 @@ export default {
 #header {
   display: flex;
   justify-content: space-between;
-  height: 64px;
   max-width: 1140px;
+  height: 64px;
   margin-right: auto;
   margin-left: auto;
 }
