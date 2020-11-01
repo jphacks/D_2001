@@ -1,9 +1,9 @@
 <template>
   <div class="input-form">
     <p>タイトル</p>
-      <input v-model="title" placeholder="タイトル">
+      <input placeholder="タイトル" v-model="title">
     <p>詳細</p>
-      <textarea v-model="description" placeholder="説明を記入してください"></textarea>
+      <textarea placeholder="説明を記入してください" v-model="descrption"></textarea>
     <p>選択肢</p>
     <div v-for="(option,index) in optionList" :key="index" class="option">
       <input v-model="option.text" placeholder="選択肢">
@@ -16,11 +16,14 @@
 </template>
 
 <script>
+import {db} from '../plugins/firebase';
 export default {
   name: 'InputForm',
-  data() {
+  data: function() {
     return {
-      optionList: []
+      optionList: [],
+      title: "",
+      descrption: ""
     };
   },
   methods: {
@@ -35,7 +38,42 @@ export default {
       console.log("キャンセルしました")
     },
     post() {
-      console.log("投稿しました")
+      var optionList = this.optionList
+      if(this.title != "" && this.descrption != ""){
+        //firestoreにタイトルと詳細をpushする
+        db.collection('Questions').add({
+          title : this.title,
+          descrption : this.descrption
+        })
+        .then(function() {
+            console.log("Document successfully written!");
+        })
+        .catch(function(error) {
+            console.error("Error writing document: ", error);
+        });
+        db.collection("Questions").where("title", "==", this.title).where("descrption", "==", this.descrption)
+        .get()
+        .then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
+              console.log(doc.id);
+              optionList.forEach(function( value ) {
+                db.collection("Questions").doc(doc.id).collection("Answers").add({
+                  content : value
+                })
+                console.log(value);
+              })
+            });
+        })
+        .then(function() {
+            console.log("Answer successfully written!");
+        })
+        .catch(function(error) {
+            console.log("Error getting documents: ", error);
+        });
+
+      } else {
+        alert("タイトルまたは詳細が空欄です.")
+      }
     }
   }
 }
