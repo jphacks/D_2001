@@ -1,9 +1,9 @@
 <template>
   <div class="input-form">
     <p>タイトル</p>
-      <input placeholder="タイトル">
+      <input placeholder="タイトル" v-model="title">
     <p>詳細</p>
-      <textarea placeholder="説明を記入してください"></textarea>
+      <textarea placeholder="説明を記入してください" v-model="descrption"></textarea>
     <p>選択肢</p>
     <div v-for="(option,index) in optionList" :key="index" class="option">
       <input v-model="option.text" placeholder="選択肢">
@@ -16,11 +16,14 @@
 </template>
 
 <script>
+import {db} from '../plugins/firebase';
 export default {
   name: 'InputForm',
-  data() {
+  data: function() {
     return {
-      optionList: []
+      optionList: [],
+      title: "",
+      descrption: ""
     };
   },
   methods: {
@@ -35,7 +38,11 @@ export default {
       console.log("キャンセルしました")
     },
     post() {
-      console.log("投稿しました")
+      //firestoreにタイトルと詳細をpushする
+      db.collection('Questions').add({
+        title : this.title,
+        descrption : this.descrption
+      })
     }
   }
 }
