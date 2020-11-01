@@ -11,7 +11,9 @@
     <button v-on:click="addOption">+</button>
     <br>
     <button v-on:click="cancel">キャンセル</button>
-    <button v-on:click="post">投稿</button>
+    <router-link to="/">
+      <button v-on:click="post">投稿</button>
+    </router-link>
   </div>
 </template>
 
