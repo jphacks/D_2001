@@ -23,5 +23,6 @@ export default {
 <style>
 #contents-container {
   background-color: #FFFFFF;
+  padding: 0;
 }
 </style>

@@ -4,8 +4,10 @@
     <button>投稿</button>
   </router-link>
   <br>
-  <div v-for="(question, index) in questions" v-bind:key="index">
-    <PostContent v-bind:docID="question.docID" />
+  <div>
+    <div v-for="(question, index) in questions" v-bind:key="index">
+      <PostContent v-bind:docID="question.docID" />
+    </div>
   </div>
 </div>
 </template>

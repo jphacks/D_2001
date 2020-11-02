@@ -1,9 +1,7 @@
 <template>
   <div class="post-content" @click="toDetails(title, description)">
-    <div class="title">
-      <div v-text="title"></div>
-    </div>
-    <div class="description">
+    <div class="post-texts">
+      <div v-text="title" class="h2"></div>
       <div v-text="description"></div>
     </div>
   </div>
@@ -36,3 +34,21 @@ export default{
   }
 }
 </script>
+
+<style>
+.post-content{
+  border-bottom: 2px solid;
+  border-color: #dddddd;
+  margin: 2px auto;
+  height: 100px;
+}
+.post-texts{
+  width: 80%;
+  margin: 0 auto;
+  padding-top: 10px;
+  text-align: left;
+}
+.post-content :hover{
+  cursor: pointer;
+}
+</style>
