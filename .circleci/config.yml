@@ -1,6 +1,5 @@
 version: 2
 jobs:
-#Firebase Deploy
   build:
     docker:
       - image: circleci/node:10
@@ -12,69 +11,51 @@ jobs:
           name: 'Node.js version check'          
           command: node --version
       - checkout
+      - restore_cache:
+          keys:
+            - v2-npm-lock-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "package.json" }}
       - run:
-          name: 'Install Firebase CLI'
-          command: npm install --save-dev firebase-tools
+          name: Install dependencies
+          command: npm install
+      - save_cache:
+          key: v2-npm-lock-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Test
+          command: npm test
       - run:
           name: 'Run build'
           command: npm run build
       - run:
           name: 'Deploy to Hosting'
           command: ./node_modules/.bin/firebase deploy --project "$FIREBASE_PROJECT_ID" --token="$FIREBASE_TOKEN"
-#lint
-  setup:
-    executor:
-      name: default
-    steps:
-      - checkout
-      - restore_npm
-      - run:
-          name: Install npm dependencies
-          command: npm ci
-      - save_npm
   lint:
-    executor:
-      name: default
+    docker:
+      - image: node:14
     steps:
-      - checkout
-      - restore_npm
       - run:
-          name: Run lint
+          name: Versions
+          command: npm version
+      - checkout
+      - restore_cache:
+          keys:
+            - v2-npm-lock-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "package.json" }}
+      - run:
+          name: Install dependencies
+          command: npm install
+      - save_cache:
+          key: v2-npm-lock-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Test
           command: npm run lint
 workflows:
   version: 2
-  linting:
-    jobs:
-      - setup
-      - lint:
-          requires:
-            - setup
   build_and_deploy:
     jobs:
       - build:
           filters:
             branches:
               only: master
-
-
-executors:
-  default:
-    working_directory: ~/repo
-    docker:
-      - image: circleci/node
-        environment:
-          TZ: Asia/Tokyo
-
-commands:
-  restore_npm:
-    steps:
-      - restore_cache:
-          name: Restore npm dependencies
-          key: npm-v1-{{ checksum "package-lock.json" }}
-  save_npm:
-    steps:
-      - save_cache:
-          name: Cache npm dependencies
-          key: npm-v1-{{ checksum "package-lock.json" }}
-          paths:
-            - ~/repo/node_modules
