@@ -1,5 +1,5 @@
 <template>
-  <div class="post-content" @click="toDetails(title, description)">
+  <div class="post-content" @click="toDetails()">
     <div class="post-texts">
       <div v-text="title" class="h2"></div>
       <div v-text="description"></div>
@@ -28,8 +28,8 @@ export default{
     })
   },
   methods: {
-    toDetails(qtitle, qdescription){
-      this.$router.push({name: 'DetailsPage', params: {title: qtitle, description: qdescription}});
+    toDetails(){
+      this.$router.push({name: 'DetailsPage', params: {docID: this.docID}});
     }
   }
 }

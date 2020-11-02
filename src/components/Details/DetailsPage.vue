@@ -12,48 +12,41 @@
 </template>
 
 <script>
-import {db} from '../../plugins/firebase';
+import {db} from '../../plugins/firebase'
 import CustomHeader from '../CustomHeader'
 export default {
   name: 'DetailsPage',
   data: function() {
     return {
       answers: [],
+      title: "",
+      description: "",
     }
   },
   components: {
     CustomHeader,
   },
-  mounted: function(){
-    console.log(this.title)
-    var ref = db.collection("Questions").where("title", "==", this.title).where("description", "==", this.description)
-
-    ref.get()
-      .then(snapshot => {
-        if (snapshot.empty) {
-          console.log('No matching document.');
-          return;
-        }
-        snapshot.forEach(doc => {
-          db.collection("Questions").doc(doc.id).collection("Answers").get().then(querySnapshot => {
-            querySnapshot.forEach(doc => {
-              // console.log(doc.id, '=>', doc.data().content)
-              var answerData = {
-                text: doc.data().content.text,
-              }
-              // console.log(answerData)
-              this.answers.push(answerData)
-            })
-          })
-        });
-      })
-      .catch(err => {
-        console.log('Error getting documents', err);
-      });
-  },
   props: [
-    'title',
-    'description'
+    'docID',
   ],
+  mounted: function(){
+    var ref = db.collection("Questions").doc(this.docID)
+    // 投稿のタイトルと詳細を取得
+    ref.get().then(doc => {
+      if(doc.exists){
+        this.title = doc.data().title
+        this.description = doc.data().description
+      }
+    })
+    // 回答一覧を取得
+    ref.collection("Answers").get().then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        var answerData = {
+          text: doc.data().content.text,
+        }
+        this.answers.push(answerData)
+      })
+    })
+  },
 }
 </script>
