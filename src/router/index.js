@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import HomePage from '../components/HomePage'
-import PostPage from '../components/PostPage'
-import DetailsPage from '../components/DetailsPage'
+import HomePage from '../components/Home/HomePage'
+import PostPage from '../components/Post/PostPage'
+import DetailsPage from '../components/Details/DetailsPage'
 
 Vue.use(Router)
 
