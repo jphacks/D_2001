@@ -2,7 +2,7 @@
   <div class="input-form">
     <p>タイトル</p>
       <input placeholder="タイトル" v-model="title">
-    <p>詳細</p>
+    <p id = "descriptionText">詳細</p>
       <textarea placeholder="説明を記入してください" v-model="description"></textarea>
     <p>選択肢</p>
     <div v-for="(option,index) in optionList" :key="index" class="option">
@@ -10,10 +10,14 @@
     </div>
     <button v-on:click="addOption">+</button>
     <br>
-    <button v-on:click="cancel">キャンセル</button>
-    <router-link to="/">
-      <button v-on:click="post">投稿</button>
-    </router-link>
+    <div class="post-buttons-container">
+      <router-link to="/">
+        <button v-on:click="cancel" class = "btn btn-outline-dark post-button">戻る</button>
+      </router-link>
+      <router-link to="/">
+        <button v-on:click="post" class = "btn btn-outline-dark post-button">投稿</button>
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -80,3 +84,22 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.input-form {
+  width: 80%;
+  min-width: 600px;
+  margin: 30px auto;
+  border: 2px solid;
+}
+
+.post-buttons-container{
+  width: 60%;
+  text-align: right;
+  margin: 60px auto;
+}
+.post-button{
+  margin: 0 30px;
+  width: 150px;
+}
+</style>
