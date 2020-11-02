@@ -4,19 +4,22 @@
     <button>投稿</button>
   </router-link>
   <br>
-  <table class="table table-bordered table-hover">
-      <tr v-for="(question, index) in questions" v-bind:key="index" @click="toDetails(question.title, question.description)">
-          <td v-text="question.title"></td>
-          <td v-text="question.description"></td>
-      </tr>
-  </table>
+  <div>
+    <div v-for="(question, index) in questions" v-bind:key="index">
+      <PostContent v-bind:docID="question.docID" />
+    </div>
+  </div>
 </div>
 </template>
 
 <script>
-import {db} from '../../plugins/firebase';
+import {db} from '../../plugins/firebase'
+import PostContent from './PostContent'
 export default {
   name: "QuestionsList",
+  components: {
+    PostContent
+  },
   data: function() {
     return {
       questions: [],
@@ -32,12 +35,10 @@ export default {
             return;
           }
           snapshot.forEach(doc => {
-            // console.log(doc.id, '=>', doc.data().title);
+            //documentIDを配列で保持する
             var questionData = {
-              title: doc.data().title,
-              description: doc.data().description,
+              docID: doc.id
             }
-            console.log(questionData)
             this.questions.push(questionData)
           });
         })
@@ -45,10 +46,5 @@ export default {
           console.log('Error getting documents', err);
         });
   },
-  methods: {
-    toDetails(qtitle, qdescription){
-      this.$router.push({name: 'DetailsPage', params: {title: qtitle, description: qdescription}});
-    }
-  }
 }
 </script>
