@@ -11,16 +11,16 @@
     <div class="container">
       <h2>選択肢</h2>
       <div v-for="(option,index) in optionList" :key="index" class="option">
-        <input v-model="option.text" placeholder="選択肢">
+        <b-form-input v-model="option.text" placeholder="選択肢"></b-form-input>
       </div>
-      <button v-on:click="addOption">+</button>
+      <b-button v-on:click="addOption" variant="primary">選択肢を追加</b-button>
     </div>
-    <div class="post-buttons-container">
+    <div class="container post-buttons-container">
       <router-link to="/">
-        <button v-on:click="cancel" class = "btn btn-outline-dark post-button">戻る</button>
+        <b-button v-on:click="cancel" variant="outline-dark">戻る</b-button>
       </router-link>
       <router-link to="/">
-        <button v-on:click="post" class = "btn btn-outline-dark post-button">投稿</button>
+        <b-button v-on:click="post" variant="danger">投稿</b-button>
       </router-link>
     </div>
   </div>
@@ -97,15 +97,22 @@ export default {
 }
 
 .container{
-  margin-bottom: 10px;
+  margin-bottom: 2rem;
 }
 
 h2 {
-  margin-bottom: 5px;
+  margin-bottom: 1rem;
 }
 
-.post-button{
-  margin: 0 30px;
-  width: 150px;
+.option{
+  margin-bottom: 1rem;
+}
+
+.post-buttons-container{
+  text-align: right;
+}
+
+.post-buttons-container > * {
+  margin-left: 20px;
 }
 </style>
