@@ -1,7 +1,8 @@
 <template>
-  <div class="answer-content">
+  <b-button block v-text="answer"></b-button>
+  <!-- <div class="answer-content">
     <div v-text="answer" class="h2"></div>
-  </div>
+  </div> -->
 </template>
 
 <script>
