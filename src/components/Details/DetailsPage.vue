@@ -3,17 +3,21 @@
     <CustomHeader/>
      <div v-if="title != undefined">{{title}}</div>
      <div v-if="description != undefined">{{description}}</div>
-     <table>
+     <!-- <table>
         <tr v-for="(answer, index) in answers" v-bind:key="index">
           <td v-text="answer.text"></td>
         </tr>
-      </table>
+      </table> -->
+      <div v-for="(answer, index) in answers" v-bind:key="index">
+        <AnswerContent v-bind:answer="answer.text" />
+      </div>
   </div>
 </template>
 
 <script>
 import {db} from '../../plugins/firebase'
 import CustomHeader from '../CustomHeader'
+import AnswerContent from './AnswerContent'
 export default {
   name: 'DetailsPage',
   data: function() {
@@ -25,6 +29,7 @@ export default {
   },
   components: {
     CustomHeader,
+    AnswerContent
   },
   props: [
     'docID',
