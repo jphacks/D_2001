@@ -5,11 +5,11 @@
         <div id="icon">name_it</div>
       </div>
       <div id="user-container">
-        <button v-on:click="login" v-if="!isUserExist" class="btn btn-primary" id="login-btn">login</button>
-        <div v-if="isUserExist" class="h1">
-          <p> {{ userName }} </p>
+        <button v-on:click="login" v-if="!isUserExist" class="btn btn-light" id="login-btn">login</button>
+        <div v-if="isUserExist">
+          <p id="user-name-text"> {{ userName }} </p>
         </div> 
-        <button v-on:click="logout" class="btn btn-primary">logout</button> 
+        <button v-on:click="logout" class="btn btn-light">logout</button> 
       </div>
     </div>
   </div>
@@ -105,7 +105,7 @@ export default {
 }
 
 #user-container {
-  width: 300px;
+  width: 400px;
   display: flex;
   justify-content: flex-end;
   margin: 5px 30px 5px 0px;
@@ -113,6 +113,11 @@ export default {
 
 #user-container > * {
   margin: 0 10px;
+}
+
+#user-name-text{
+  font-size: 1.6em;
+  padding: auto 0;
 }
 
 .btn {
