@@ -1,7 +1,9 @@
 <template>
   <div>
     <CustomHeader/>
-    <InputForm/>
+    <b-container id="contents-container">
+     <InputForm/>
+    </b-container>
   </div>
 </template>
 
@@ -17,3 +19,9 @@ export default {
   }
 }
 </script>
+
+<style>
+#contents-container {
+  margin-top: 30px;
+}
+</style>

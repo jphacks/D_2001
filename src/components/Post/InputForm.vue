@@ -1,19 +1,28 @@
 <template>
   <div class="input-form">
-    <p>タイトル</p>
-      <input placeholder="タイトル" v-model="title">
-    <p>詳細</p>
-      <textarea placeholder="説明を記入してください" v-model="description"></textarea>
-    <p>選択肢</p>
-    <div v-for="(option,index) in optionList" :key="index" class="option">
-      <input v-model="option.text" placeholder="選択肢">
+    <div class="container">
+      <h2>タイトル</h2>
+      <b-form-input placeholder="タイトル" v-model="title"></b-form-input>
     </div>
-    <button v-on:click="addOption">+</button>
-    <br>
-    <button v-on:click="cancel">キャンセル</button>
-    <router-link to="/">
-      <button v-on:click="post">投稿</button>
-    </router-link>
+    <div class="container">
+      <h2>詳細</h2>
+      <b-form-textarea placeholder="説明を記入してください" v-model="description" rows="10" no-resize></b-form-textarea>
+    </div>
+    <div class="container">
+      <h2>選択肢</h2>
+      <div v-for="(option,index) in optionList" :key="index" class="option">
+        <b-form-input v-model="option.text" placeholder="選択肢"></b-form-input>
+      </div>
+      <b-button v-on:click="addOption" variant="primary">選択肢を追加</b-button>
+    </div>
+    <div class="container post-buttons-container">
+      <router-link to="/">
+        <b-button v-on:click="cancel" variant="outline-dark">戻る</b-button>
+      </router-link>
+      <router-link to="/">
+        <b-button v-on:click="post" variant="danger">投稿</b-button>
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -80,3 +89,30 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.input-form {
+  background-color: #FFFFFF;
+  padding: 30px;
+}
+
+.container{
+  margin-bottom: 2rem;
+}
+
+h2 {
+  margin-bottom: 1rem;
+}
+
+.option{
+  margin-bottom: 1rem;
+}
+
+.post-buttons-container{
+  text-align: right;
+}
+
+.post-buttons-container > * {
+  margin-left: 20px;
+}
+</style>
