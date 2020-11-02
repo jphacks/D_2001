@@ -5,7 +5,7 @@
   </router-link>
   <br>
   <table class="table table-bordered table-hover">
-      <tr v-for="(question, index) in questions" v-bind:key="index">
+      <tr v-for="(question, index) in questions" v-bind:key="index" @click="toDetails(question.title, question.description)">
           <td v-text="question.title"></td>
           <td v-text="question.description"></td>
       </tr>
@@ -45,5 +45,10 @@ export default {
           console.log('Error getting documents', err);
         });
   },
+  methods: {
+    toDetails(qtitle, qdescription){
+      this.$router.push({name: 'DetailsPage', params: {title: qtitle, description: qdescription}});
+    }
+  }
 }
 </script>
