@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import CustomHeader from './CustomHeader'
+import CustomHeader from '../CustomHeader'
 import InputForm from './InputForm'
 
 export default {

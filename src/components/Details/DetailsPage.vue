@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import {db} from '../plugins/firebase';
-import CustomHeader from './CustomHeader'
+import {db} from '../../plugins/firebase';
+import CustomHeader from '../CustomHeader'
 export default {
   name: 'DetailsPage',
   data: function() {
