@@ -1,15 +1,20 @@
 <template>
   <div class="input-form">
-    <p>タイトル</p>
-      <input placeholder="タイトル" v-model="title">
-    <p id = "descriptionText">詳細</p>
-      <textarea placeholder="説明を記入してください" v-model="description"></textarea>
-    <p>選択肢</p>
-    <div v-for="(option,index) in optionList" :key="index" class="option">
-      <input v-model="option.text" placeholder="選択肢">
+    <div class="container">
+      <h2>タイトル</h2>
+      <b-form-input placeholder="タイトル" v-model="title"></b-form-input>
     </div>
-    <button v-on:click="addOption">+</button>
-    <br>
+    <div class="container">
+      <h2>詳細</h2>
+      <b-form-textarea placeholder="説明を記入してください" v-model="description" rows="10" no-resize></b-form-textarea>
+    </div>
+    <div class="container">
+      <h2>選択肢</h2>
+      <div v-for="(option,index) in optionList" :key="index" class="option">
+        <input v-model="option.text" placeholder="選択肢">
+      </div>
+      <button v-on:click="addOption">+</button>
+    </div>
     <div class="post-buttons-container">
       <router-link to="/">
         <button v-on:click="cancel" class = "btn btn-outline-dark post-button">戻る</button>
@@ -87,17 +92,18 @@ export default {
 
 <style scoped>
 .input-form {
-  width: 80%;
-  min-width: 600px;
-  margin: 30px auto;
-  border: 2px solid;
+  background-color: #FFFFFF;
+  padding: 30px;
 }
 
-.post-buttons-container{
-  width: 60%;
-  text-align: right;
-  margin: 60px auto;
+.container{
+  margin-bottom: 10px;
 }
+
+h2 {
+  margin-bottom: 5px;
+}
+
 .post-button{
   margin: 0 30px;
   width: 150px;
