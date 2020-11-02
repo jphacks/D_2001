@@ -2,15 +2,15 @@
   <div id="header-container">
     <div id="header" v-if="!loading">
       <div id="icon-container">
-        <div id="icon">name_it</div>
+        <div id="icon"><img src="..\assets\crop_original-24px.svg" width="30" height="30" style="fill: white;" alt="name_it icon"> name_it</div>
       </div>
       <router-link to="/post">
-        <b-button variant="light" id="post-button">投稿</b-button>
+        <b-button variant="light" id="post-button"><img src="..\assets\forum-24px.svg" alt="post_icon"> 投稿</b-button>
       </router-link>
       <div id="user-container">
-        <button v-on:click="login" v-if="!isUserExist" class="btn btn-light" id="login-btn">login</button>
+        <button v-on:click="login" v-if="!isUserExist" class="btn btn-light" id="login-btn"><img src="..\assets\login-24px.svg" alt="login_icon"> login</button>
         <div v-if="isUserExist">
-          <p id="user-name-text"> {{ userName }} </p>
+          <div id="user-name-text"> {{ userName }} </div>
         </div> 
         <button v-on:click="logout" class="btn btn-light">logout</button> 
       </div>
@@ -89,7 +89,7 @@ export default {
 
 #header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   max-width: 1140px;
   height: 64px;
   margin-right: auto;
@@ -97,7 +97,8 @@ export default {
 }
 
 #icon-container {
-  width: 500px;
+  width: 200px;
+  margin-left: 30px;
 }
 
 #icon {
@@ -107,13 +108,19 @@ export default {
   padding-top: 5px;
 }
 
+/* 投稿ボタンから右にずらしたい暫定策 */
+#header > a {
+  margin-left: auto;
+  margin-right: 20px;
+}
+
 #post-button{
   width: 100px;
   margin: 10px auto;
 }
 
 #user-container {
-  width: 400px;
+  width: 200px;
   display: flex;
   justify-content: flex-end;
   margin: 10px 30px 10px 0px;
@@ -124,7 +131,10 @@ export default {
 }
 
 #user-name-text{
-  font-size: 1.6em;
-  padding: auto 0;
+  padding-top: 6px;
+  width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1.2rem;
 }
 </style>
