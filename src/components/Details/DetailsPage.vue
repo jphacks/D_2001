@@ -1,16 +1,19 @@
 <template>
   <div>
     <CustomHeader/>
-     <div v-if="title != undefined">{{title}}</div>
-     <div v-if="description != undefined">{{description}}</div>
-     <!-- <table>
-        <tr v-for="(answer, index) in answers" v-bind:key="index">
-          <td v-text="answer.text"></td>
-        </tr>
-      </table> -->
-      <div v-for="(answer, index) in answers" v-bind:key="index">
-        <AnswerContent v-bind:answer="answer.text" />
+    <b-container id="contents-container">
+      <div class="container">
+        <div v-if="title != undefined" class="h1">{{title}}</div>
       </div>
+      <div class="container">
+        <div v-if="description != undefined" class="h2">{{description}}</div>
+      </div>
+      <div class="container">
+        <div v-for="(answer, index) in answers" v-bind:key="index">
+          <AnswerContent v-bind:answer="answer.text" />
+        </div>
+      </div>
+    </b-container>
   </div>
 </template>
 
