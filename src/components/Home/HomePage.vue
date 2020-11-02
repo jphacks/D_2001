@@ -1,7 +1,9 @@
 <template>
   <div>
     <CustomHeader/>
-    <QuestionsList/>
+    <b-container id="contents-container">
+      <QuestionsList/>
+    </b-container>
   </div>
 </template>
 
@@ -17,3 +19,9 @@ export default {
   }
 }
 </script>
+
+<style>
+#contents-container {
+  background-color: #FFFFFF;
+}
+</style>

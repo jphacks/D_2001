@@ -23,12 +23,4 @@ export default {
   min-height: 100vh;
   padding-top: 64px;
 }
-
-#contents-container {
-  max-width: 1140px;
-  margin-top: 30px;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: #FFFFFF;
-}
 </style>
