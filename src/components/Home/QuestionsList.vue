@@ -1,8 +1,5 @@
 <template>
 <div>
-  <router-link to="/post">
-    <button>投稿</button>
-  </router-link>
   <br>
   <div>
     <div v-for="(question, index) in questions" v-bind:key="index">

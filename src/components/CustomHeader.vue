@@ -4,6 +4,9 @@
       <div id="icon-container">
         <div id="icon">name_it</div>
       </div>
+      <router-link to="/post">
+        <b-button variant="light" id="post-button">投稿</b-button>
+      </router-link>
       <div id="user-container">
         <button v-on:click="login" v-if="!isUserExist" class="btn btn-light" id="login-btn">login</button>
         <div v-if="isUserExist">
@@ -104,11 +107,16 @@ export default {
   padding-top: 5px;
 }
 
+#post-button{
+  width: 100px;
+  margin: 10px auto;
+}
+
 #user-container {
   width: 400px;
   display: flex;
   justify-content: flex-end;
-  margin: 5px 30px 5px 0px;
+  margin: 10px 30px 10px 0px;
 }
 
 #user-container > * {
@@ -118,9 +126,5 @@ export default {
 #user-name-text{
   font-size: 1.6em;
   padding: auto 0;
-}
-
-.btn {
-  margin: 5px 0;
 }
 </style>
