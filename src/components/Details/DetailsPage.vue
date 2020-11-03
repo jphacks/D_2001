@@ -2,19 +2,23 @@
   <div>
     <CustomHeader/>
     <b-container id="contents-container">
+      <!-- タイトル欄 -->
       <div class="container">
         <div v-if="title != undefined" class="h1">{{title}}</div>
       </div>
       <hr>
+      <!-- 詳細欄 -->
       <div class="container">
         <div v-if="description != undefined">{{description}}</div>
       </div>
       <hr>
+      <!-- 選択肢欄 -->
       <div class="container">
         <div v-for="(answer, index) in answers" v-bind:key="index" class="options-container">
           <AnswerContent v-bind:answer="answer.text" />
         </div>
       </div>
+      <!-- 選択肢追加入力欄 -->
       <b-input-group class="container">
         <b-form-input placeholder="選択肢" v-model="candidate" class="add-option-form"></b-form-input>
         <b-button v-on:click="addAnswer" variant="outline-dark">追加する</b-button>

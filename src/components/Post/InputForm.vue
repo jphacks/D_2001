@@ -1,13 +1,16 @@
 <template>
   <div class="input-form">
+    <!-- タイトル入力欄 -->
     <div class="container">
       <h2>タイトル</h2>
       <b-form-input placeholder="タイトル" v-model="title"></b-form-input>
     </div>
+    <!-- 詳細入力欄 -->
     <div class="container">
       <h2>詳細</h2>
       <b-form-textarea placeholder="説明を記入してください" v-model="description" rows="10" no-resize></b-form-textarea>
     </div>
+    <!-- 選択肢入力欄 -->
     <div class="container">
       <h2>選択肢</h2>
       <div v-for="(option,index) in optionList" :key="index" class="option">
@@ -15,6 +18,7 @@
       </div>
       <b-button v-on:click="addOption" variant="primary">選択肢を追加</b-button>
     </div>
+    <!-- 投稿ボタンなど -->
     <div class="container post-buttons-container">
       <router-link to="/">
         <b-button v-on:click="cancel" variant="outline-dark">戻る</b-button>
