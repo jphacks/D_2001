@@ -34,7 +34,7 @@ export default {
       answers: [],
       title: "",
       description: "",
-      candidate: ""
+      candidate: "",
     }
   },
   components: {
@@ -69,8 +69,13 @@ export default {
       db.collection('Questions').doc(this.docID).collection('Answers').add({
         text: this.candidate
       })
-      .then(function() {
-          console.log("Answer successfully written!");
+      .then(() => {
+        console.log("Answer successfully written!");
+        var answerData = {
+          text: this.candidate
+        }
+        this.answers.push(answerData)
+        this.candidate = ""
       })
       .catch(function(error) {
           console.error("Error writing document: ", error);
