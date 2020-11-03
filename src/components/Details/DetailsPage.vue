@@ -12,7 +12,7 @@
       <hr>
       <div class="container">
         <div v-for="(answer, index) in answers" v-bind:key="index" class="options-container">
-          <AnswerContent @sendIndex="setIndex" v-bind:answer="{text: answer.text, id: answer.id}"/>
+          <AnswerContent @sendIndex="setIndex" v-bind:answer="{text: answer.text, index: index, votes: answer.votes}"/>
         </div>
       </div>
       <div class="container">
@@ -36,7 +36,7 @@ export default {
       title: "",
       description: "",
       candidate: "",
-      selectedId: "",
+      selectedIndex: "",
       questionID: "",
     }
   },
@@ -80,6 +80,7 @@ export default {
         var answerData = {
           id: doc.id,
           text: doc.data().text,
+          votes: doc.data().votesNum,
         }
         this.answers.push(answerData)
       })
@@ -104,18 +105,18 @@ export default {
           console.error("Error writing document: ", error);
       });
     },
-    setIndex: function(selectedId){
-      this.selectedId = selectedId
+    setIndex: function(index){
+      this.selectedIndex = index
     },
     vote: async function(){
-      var answerID = this.selectedId
+      var answerID = this.answers[this.selectedIndex].id
       var userRef = db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.questionID)
       var dbRef = db.collection('Questions').doc(this.questionID).collection('Answers')
       await this.controlVote(userRef, dbRef, answerID)
       await this.updateAnswerID(userRef, answerID)
     },
     controlVote: function(userRef, dbRef, answerID){
-      return new Promise(function(resolve){
+      return new Promise(resolve => {
         // 同じ回答に投票していないか確認する
         userRef.get().then(snapshot => {
           var preAnswerId = snapshot.data().answerId
@@ -129,6 +130,13 @@ export default {
                 dbRef.doc(answerID).get().then(snapshot => {
                   if(snapshot.exists){
                     var num = snapshot.data().votesNum
+                    var ansText = snapshot.data().text
+                    // 表示する票数を増やす
+                    for(var i in this.answers){
+                      if(ansText == this.answers[i].text){
+                        this.answers[i].votes++
+                      }
+                    }
                     dbRef.doc(answerID).update({
                       votesNum: num+1
                     })
@@ -138,6 +146,13 @@ export default {
                 dbRef.doc(preAnswerId).get().then(snapshot => {
                   if(snapshot.exists){
                     var preAnsNum = snapshot.data().votesNum
+                    var preAnsText = snapshot.data().text
+                    // 表示する票数を減らす
+                    for(var i in this.answers){
+                      if(preAnsText == this.answers[i].text){
+                        this.answers[i].votes--
+                      }
+                    }
                     dbRef.doc(preAnswerId).update({
                       votesNum: preAnsNum-1
                     })
