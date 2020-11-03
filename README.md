@@ -1,4 +1,8 @@
 [![Jump to Wiki](https://img.shields.io/badge/TeamDoc-GitHubWiki-yellow)](https://github.com/jphacks/D_2001/wiki)
+
+
+[![CircleCI](https://circleci.com/gh/jphacks/D_2001.svg?style=shield)](https://app.circleci.com/pipelines/github/jphacks/D_2001)
+
 # サンプル（プロダクト名）
 
 [![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2020/09/JPHACKS2020_ogp.jpg)](https://www.youtube.com/watch?v=G5rULR53uMk)
