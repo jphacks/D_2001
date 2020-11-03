@@ -4,5 +4,6 @@ module.exports = {
     'plugin:vue/recommended',
   ],
   rules: {
+    max-len: ["error", {"code": 10}]
   }
 }
