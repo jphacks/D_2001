@@ -15,6 +15,10 @@
           <AnswerContent v-bind:answer="answer.text" />
         </div>
       </div>
+      <div class="container">
+        <b-form-input placeholder="選択肢" v-model="candidate"></b-form-input>
+        <b-button v-on:click="addAnswer" variant="outline-dark">追加する</b-button>
+      </div>
     </b-container>
   </div>
 </template>
@@ -30,6 +34,7 @@ export default {
       answers: [],
       title: "",
       description: "",
+      candidate: ""
     }
   },
   components: {
@@ -57,6 +62,11 @@ export default {
         this.answers.push(answerData)
       })
     })
+  },
+  methods:{
+    addAnswer: function(){
+      console.log(this.candidate)
+    }
   },
 }
 </script>
