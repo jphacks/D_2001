@@ -5,7 +5,8 @@ import createPersistedState from "vuex-persistedstate";
 Vue.use(Vuex)
 
 const initialState = {
-  docID: ''
+  docID: '',
+  userID: ''
 }
 
 const store = new Vuex.Store({
@@ -17,8 +18,10 @@ const store = new Vuex.Store({
   //getters:コンポーネントでいうcomputed的なもの
   getters:{
     docID(state) {
-      console.log(state.docID)
       return state.docID
+    },
+    userID(state){
+      return state.userID
     }
   },
 
@@ -28,6 +31,10 @@ const store = new Vuex.Store({
     //vuexでは引数をpayloadと呼ぶっぽい
     setDocID(state, payload){
       state.docID = payload
+    },
+    setUserID(state, payload){
+      state.userID = payload
+      console.log(state.userID)
     }
   },
 
@@ -35,6 +42,9 @@ const store = new Vuex.Store({
   actions: {
     doUpdate({commit}, docID){
       commit('setDocID',docID)
+    },
+    updateUserID({commit}, userID){
+      commit('setUserID', userID)
     }
   },
 
