@@ -50,6 +50,9 @@ export default {
   computed:{
     getStoreID(){
       return this.$store.getters.docID
+    },
+    getUserID(){
+      return this.$store.getters.userID
     }
   },
   mounted: function(){
@@ -104,7 +107,7 @@ export default {
       this.selectedIndex = index
     },
     vote: function(){
-      db.collection("Users").doc("3ATDk0SAaSrxgFQRao7u").collection("Questions").doc(this.questionID).set({
+      db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.questionID).set({
           answerId: this.answers[this.selectedIndex].id
         })
         .then(function() {
