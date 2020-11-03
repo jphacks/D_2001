@@ -10,7 +10,7 @@
       <!-- 投稿ボタン -->
       <router-link to="/post">
         <b-button variant="light" class="post-button">
-          <img src="..\assets\post-icon-24px.svg" alt="post-icon">
+          <img src="../assets/post-icon-24px.svg" alt="post-icon">
           投稿
         </b-button>
       </router-link>
@@ -18,7 +18,7 @@
       <div id="user-container">
         <!-- ログインボタン -->
         <b-button v-on:click="login" v-if="!isUserExist" variant="light" >
-          <img src="..\assets\login-icon-24px.svg" alt="login-icon"> login
+          <img src="../assets/login-icon-24px.svg" alt="login-icon"> login
         </b-button>
         <!-- ユーザー名 -->
         <div v-if="isUserExist">
@@ -36,6 +36,7 @@
 <script>
 import firebase from 'firebase/app';
 import 'firebase/auth'
+import {db} from '../plugins/firebase'
 export default {
   name: 'CustomHeader',
   data() {
@@ -54,12 +55,13 @@ export default {
     login: function(){
       console.log("login")
       var provider = new firebase.auth.GithubAuthProvider();
-      firebase.auth().signInWithPopup(provider).then(function(result) {
+      firebase.auth().signInWithPopup(provider).then((result) => {
         // ログイン成功
         var user = result.user;
         console.log(user.displayName)
         this.isUserExist = true
-        this.userName = user.displayName 
+        this.userName = user.displayName
+        this.initializeUserdb(user)
       }).catch(function() {
         // ログイン失敗
       });
@@ -81,6 +83,8 @@ export default {
         console.log("ログイン済み "+ user.displayName)
         this.isUserExist = true
         this.userName = user.displayName
+        //storeに値をuserIDを保存
+        this.$store.dispatch('updateUserID', user.uid)
       } else {
         console.log("未ログイン")
         this.isUserExist = false
@@ -88,6 +92,18 @@ export default {
       // ログイン確認終了
       this.loading = false
     },
+    initializeUserdb: function(user){
+      console.log("DBの初期化  "+ user.uid)
+      db.collection("Users").doc(user.uid).set({
+          name: user.displayName
+        })
+        .then(function() {
+            console.log("Document successfully written!");
+        })
+        .catch(function(error) {
+            console.error("Error writing document: ", error);
+        });
+    }
   },
 }
 </script>
