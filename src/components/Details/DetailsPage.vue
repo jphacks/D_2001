@@ -87,14 +87,15 @@ export default {
   },
   methods:{
     addAnswer: function(){
-      console.log(this.candidate)
+      //回答を追加する
       db.collection('Questions').doc(this.questionID).collection('Answers').add({
         text: this.candidate
       })
       .then(() => {
         console.log("Answer successfully written!");
         var answerData = {
-          text: this.candidate
+          text: this.candidate,
+          votesNum: 0
         }
         this.answers.push(answerData)
         this.candidate = ""

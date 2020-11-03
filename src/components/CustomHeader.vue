@@ -15,7 +15,7 @@
       <div id="user-container">
         <!-- ログインボタン -->
         <button v-on:click="login" v-if="!isUserExist" class="btn btn-light" id="login-btn">
-          <img src="../assets/login-icon-24px.svg" alt="login-icon"> 
+          <img src="../assets/login-icon-24px.svg" alt="login-icon">
           login
         </button>
         <!-- ユーザー名 -->
