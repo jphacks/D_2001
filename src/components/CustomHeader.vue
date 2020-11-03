@@ -1,12 +1,15 @@
 <template>
   <div id="header-container">
-    <div id="header" v-if="!loading">
-      <div id="icon-container">
-        <div id="icon"><img src="..\assets\app-logo-24px.svg" width="30" height="30" style="fill: white;" alt="name_it icon"> name_it</div>
+    <b-container class="header" v-if="!loading">
+      <div class="icon-container">
+        <div>
+          <img src="../assets/name_it_icon.png" alt="name_it icon" class="name-it-icon">
+        </div>
+        <div class="name-it-title">name_it</div>
       </div>
       <!-- 投稿ボタン -->
       <router-link to="/post">
-        <b-button variant="light" id="post-button">
+        <b-button variant="light" class="post-button">
           <img src="..\assets\post-icon-24px.svg" alt="post-icon">
           投稿
         </b-button>
@@ -14,18 +17,19 @@
       <!-- ユーザー情報のコンテナ -->
       <div id="user-container">
         <!-- ログインボタン -->
-        <button v-on:click="login" v-if="!isUserExist" class="btn btn-light" id="login-btn">
-          <img src="..\assets\login-icon-24px.svg" alt="login-icon"> 
-          login
-        </button>
+        <b-button v-on:click="login" v-if="!isUserExist" variant="light" >
+          <img src="..\assets\login-icon-24px.svg" alt="login-icon"> login
+        </b-button>
         <!-- ユーザー名 -->
         <div v-if="isUserExist">
           <div id="user-name-text"> {{ userName }} </div>
         </div> 
         <!-- ログアウトボタン -->
-        <button v-on:click="logout" class="btn btn-light">logout</button> 
+        <b-button v-on:click="logout" variant="light" >
+          logout
+        </b-button>
       </div>
-    </div>
+    </b-container>
   </div>
 </template>
 
@@ -94,60 +98,61 @@ export default {
   top: 0px;
   left: 0px;
   width: 100%;
+  height: 70px;
   background-color: #2d3047;
   color: #ffffff;
 }
 
-#header {
+.header {
   display: flex;
   justify-content: flex-start;
-  max-width: 1140px;
-  height: 64px;
+  height: 70px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.icon-container {
   margin-right: auto;
-  margin-left: auto;
+  display: flex;
 }
 
-#icon-container {
-  width: 200px;
-  margin-left: 30px;
+.name-it-icon{
+  width: 60px;
 }
 
-#icon {
+.name-it-title {
   height: 100%;
   font-size: 30px;
   font-weight: bold;
+  padding-left: 10px;
   padding-top: 5px;
 }
 
-/* 投稿ボタンから右にずらしたい暫定策 */
-#header > a {
-  margin-left: auto;
-  margin-right: 20px;
-}
-
-#post-button{
+.post-button{
   width: 100px;
-  margin: 10px auto;
+  height: 50px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 #user-container {
   width: 200px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   display: flex;
   justify-content: flex-end;
-  margin: 10px 30px 10px 0px;
 }
 
 #user-container > * {
-  margin: 0 10px;
-}
-
-#login-btn > img{
-  float: left;
+  margin-left: 10px;
 }
 
 #user-name-text{
-  padding-top: 6px;
+  /* テキストの高さ揃え */
+  padding-top: 9px;
+
   width: 100px;
+  text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 1.2rem;
