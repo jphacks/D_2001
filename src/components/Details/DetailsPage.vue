@@ -108,15 +108,28 @@ export default {
       this.selectedIndex = index
     },
     vote: function(){
+      var answerID = this.answers[this.selectedIndex].id
+        console.log(answerID)
+      // Usersテーブルに投票した回答を保存する
       db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.questionID).set({
-          answerId: this.answers[this.selectedIndex].id
-        })
-        .then(function() {
-            console.log("Document successfully written!");
-        })
-        .catch(function(error) {
-            console.error("Error writing document: ", error);
-        });
+        answerId: answerID
+      })
+      .then(function() {
+          console.log("Document successfully written!");
+      })
+      .catch(function(error) {
+          console.error("Error writing document: ", error);
+      });
+      // 投票数を１加算する
+      var dbRef = db.collection('Questions').doc(this.questionID).collection('Answers').doc(answerID)
+      dbRef.get().then(snapshot => {
+        if(snapshot.exists){
+          var num = snapshot.data().votesNum
+          dbRef.update({
+            votesNum: num+1
+          })
+        }
+      })
     }
   },
 }
