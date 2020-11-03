@@ -69,7 +69,7 @@ export default {
               console.log(doc.id);
               optionList.forEach(function( value ) {
                 db.collection("Questions").doc(doc.id).collection("Answers").add({
-                  content : value
+                  text : value.text
                 })
                 console.log(value);
               })
