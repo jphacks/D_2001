@@ -12,7 +12,7 @@
       <hr>
       <div class="container">
         <div v-for="(answer, index) in answers" v-bind:key="index" class="options-container">
-          <AnswerContent @sendIndex="setIndex" v-bind:answer="{text: answer.text, index: index}"/>
+          <AnswerContent @sendIndex="setIndex" v-bind:answer="{text: answer.text, id: answer.id}"/>
         </div>
       </div>
       <div class="container">
@@ -36,7 +36,7 @@ export default {
       title: "",
       description: "",
       candidate: "",
-      selectedIndex: "",
+      selectedId: "",
       questionID: "",
     }
   },
@@ -104,11 +104,11 @@ export default {
           console.error("Error writing document: ", error);
       });
     },
-    setIndex: function(index){
-      this.selectedIndex = index
+    setIndex: function(selectedId){
+      this.selectedId = selectedId
     },
     vote: async function(){
-      var answerID = this.answers[this.selectedIndex].id
+      var answerID = this.selectedId
       var userRef = db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.questionID)
       var dbRef = db.collection('Questions').doc(this.questionID).collection('Answers')
       await this.controlVote(userRef, dbRef, answerID)
