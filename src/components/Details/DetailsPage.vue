@@ -5,11 +5,13 @@
       <div class="container">
         <div v-if="title != undefined" class="h1">{{title}}</div>
       </div>
+      <hr>
       <div class="container">
-        <div v-if="description != undefined" class="h2">{{description}}</div>
+        <div v-if="description != undefined">{{description}}</div>
       </div>
+      <hr>
       <div class="container">
-        <div v-for="(answer, index) in answers" v-bind:key="index">
+        <div v-for="(answer, index) in answers" v-bind:key="index" class="options-container">
           <AnswerContent v-bind:answer="answer.text" />
         </div>
       </div>
@@ -58,3 +60,18 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+#contents-container{
+  padding: 30px;
+}
+
+.container {
+  margin-bottom: 10px;
+}
+
+.options-container{
+  margin-bottom: 5px;
+}
+
+</style>
