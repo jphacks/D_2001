@@ -4,14 +4,25 @@
       <div id="icon-container">
         <div id="icon"><img src="..\assets\crop_original-24px.svg" width="30" height="30" style="fill: white;" alt="name_it icon"> name_it</div>
       </div>
+      <!-- 投稿ボタン -->
       <router-link to="/post">
-        <b-button variant="light" id="post-button"><img src="..\assets\forum-24px.svg" alt="post_icon"> 投稿</b-button>
+        <b-button variant="light" id="post-button">
+          <img src="..\assets\forum-24px.svg" alt="post_icon">
+          投稿
+        </b-button>
       </router-link>
+      <!-- ユーザー情報のコンテナ -->
       <div id="user-container">
-        <button v-on:click="login" v-if="!isUserExist" class="btn btn-light" id="login-btn"><img src="..\assets\login-24px.svg" alt="login_icon"> login</button>
+        <!-- ログインボタン -->
+        <button v-on:click="login" v-if="!isUserExist" class="btn btn-light" id="login-btn">
+          <img src="..\assets\login-24px.svg" alt="login_icon"> 
+          login
+        </button>
+        <!-- ユーザー名 -->
         <div v-if="isUserExist">
           <div id="user-name-text"> {{ userName }} </div>
         </div> 
+        <!-- ログアウトボタン -->
         <button v-on:click="logout" class="btn btn-light">logout</button> 
       </div>
     </div>
@@ -128,6 +139,10 @@ export default {
 
 #user-container > * {
   margin: 0 10px;
+}
+
+#login-btn > img{
+  float: left;
 }
 
 #user-name-text{
