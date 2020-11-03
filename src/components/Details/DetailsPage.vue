@@ -66,6 +66,15 @@ export default {
   methods:{
     addAnswer: function(){
       console.log(this.candidate)
+      db.collection('Questions').doc(this.docID).collection('Answers').add({
+        text: this.candidate
+      })
+      .then(function() {
+          console.log("Answer successfully written!");
+      })
+      .catch(function(error) {
+          console.error("Error writing document: ", error);
+      });
     }
   },
 }
