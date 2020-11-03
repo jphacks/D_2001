@@ -15,10 +15,10 @@
           <AnswerContent v-bind:answer="answer.text" />
         </div>
       </div>
-      <div class="container">
-        <b-form-input placeholder="選択肢" v-model="candidate"></b-form-input>
+      <b-input-group class="container">
+        <b-form-input placeholder="選択肢" v-model="candidate" class="add-option-form"></b-form-input>
         <b-button v-on:click="addAnswer" variant="outline-dark">追加する</b-button>
-      </div>
+      </b-input-group>
     </b-container>
   </div>
 </template>
@@ -107,11 +107,15 @@ export default {
 }
 
 .container {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .options-container{
   margin-bottom: 5px;
+}
+
+.add-option-container{
+  display: flex;
 }
 
 </style>
