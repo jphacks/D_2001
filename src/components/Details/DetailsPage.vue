@@ -113,28 +113,41 @@ export default {
       var dbRef = db.collection('Questions').doc(this.questionID).collection('Answers')
       // 同じ回答に投票していないか確認する
       userRef.get().then(snapshot => {
+        console.log("先にやって")
         var preAnswerId = snapshot.data().answerId
-        if(snapshot.exists && preAnswerId != null){
-          if(preAnswerId == answerID){
-            // 前回を同じ回答に投票している
-            console.log("同じ回答です")
-            return
-          } else {
+        if(snapshot.exists){
+          if(preAnswerId != null){
+            if(preAnswerId == answerID){
+              // 前回を同じ回答に投票している
+              console.log("同じ回答です")
+            } else {
+              // 投票する回答に投票数を1増やす
+              dbRef.doc(answerID).get().then(snapshot => {
+                if(snapshot.exists){
+                  var num = snapshot.data().votesNum
+                  dbRef.doc(answerID).update({
+                    votesNum: num+1
+                  })
+                }
+              })
+              // 前に回答していた投票を1減らす
+              dbRef.doc(preAnswerId).get().then(snapshot => {
+                if(snapshot.exists){
+                  var preAnsNum = snapshot.data().votesNum
+                  dbRef.doc(preAnswerId).update({
+                    votesNum: preAnsNum-1
+                  })
+                }
+              })
+            }
+          } else{
+            // 初めての投票
             // 投票する回答に投票数を1増やす
             dbRef.doc(answerID).get().then(snapshot => {
               if(snapshot.exists){
                 var num = snapshot.data().votesNum
                 dbRef.doc(answerID).update({
                   votesNum: num+1
-                })
-              }
-            })
-            // 前に回答していた投票を1減らす
-            dbRef.doc(preAnswerId).get().then(snapshot => {
-              if(snapshot.exists){
-                var num = snapshot.data().votesNum
-                dbRef.doc(preAnswerId).update({
-                  votesNum: num-1
                 })
               }
             })
@@ -146,6 +159,7 @@ export default {
         answerId: answerID
       })
       .then(function() {
+        console.log("後にやる")
           console.log("Document successfully written!");
       })
       .catch(function(error) {
