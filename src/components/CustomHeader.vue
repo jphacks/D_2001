@@ -153,8 +153,9 @@ export default {
 
   width: 100px;
   text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
   font-size: 1.2rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;;
 }
 </style>
