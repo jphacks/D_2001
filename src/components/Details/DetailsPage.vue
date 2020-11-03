@@ -12,7 +12,7 @@
       <hr>
       <div class="container">
         <div v-for="(answer, index) in answers" v-bind:key="index" class="options-container">
-          <AnswerContent v-bind:answer="answer.text" />
+          <AnswerContent @sendIndex="setIndex" v-bind:answer="{text: answer.text, index: index}"/>
         </div>
       </div>
       <div class="container">
@@ -20,6 +20,7 @@
         <b-button v-on:click="addAnswer" variant="outline-dark">追加する</b-button>
       </div>
     </b-container>
+    <b-button v-on:click="vote">投票する</b-button>
   </div>
 </template>
 
@@ -35,6 +36,7 @@ export default {
       title: "",
       description: "",
       candidate: "",
+      selectedIndex: ""
     }
   },
   components: {
@@ -42,7 +44,7 @@ export default {
     AnswerContent
   },
   props: [
-    'docID',
+    'docID'
   ],
   mounted: function(){
     var ref = db.collection("Questions").doc(this.docID)
@@ -65,7 +67,6 @@ export default {
   },
   methods:{
     addAnswer: function(){
-      console.log(this.candidate)
       db.collection('Questions').doc(this.docID).collection('Answers').add({
         text: this.candidate
       })
@@ -76,6 +77,21 @@ export default {
         }
         this.answers.push(answerData)
         this.candidate = ""
+      })
+      .catch(function(error) {
+          console.error("Error writing document: ", error);
+      });
+    },
+    setIndex: function(index){
+      this.selectedIndex = index
+    },
+    vote: function(){
+      console.log(this.selectedIndex)
+      db.collection('Users').add({
+        name: "test"
+      })
+      .then(function() {
+          console.log("Document successfully written!");
       })
       .catch(function(error) {
           console.error("Error writing document: ", error);

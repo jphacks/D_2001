@@ -1,5 +1,5 @@
 <template>
-  <b-button block v-text="answer"></b-button>
+  <b-button v-on:click="selected" block v-text="answer.text"></b-button>
   <!-- <div class="answer-content">
     <div v-text="answer" class="h2"></div>
   </div> -->
@@ -9,6 +9,11 @@
 export default{
   name: "AnswerContent",
   props: ['answer'],
+  methods:{
+    selected: function(){
+      this.$emit("sendIndex", this.answer.index);
+    }
+  },
 }
 </script>
 
