@@ -16,7 +16,7 @@
       <div v-for="(option,index) in optionList" :key="index" class="option">
         <b-form-input v-model="option.text" placeholder="選択肢"></b-form-input>
       </div>
-      <b-button v-on:click="addOption" variant="primary">選択肢を追加</b-button>
+      <b-button v-on:click="addOption" variant="secondary">選択肢を追加</b-button>
     </div>
     <!-- 投稿ボタンなど -->
     <div class="container post-buttons-container">
@@ -24,7 +24,7 @@
         <b-button v-on:click="cancel" variant="outline-dark">戻る</b-button>
       </router-link>
       <router-link to="/">
-        <b-button v-on:click="post" variant="danger">投稿</b-button>
+        <b-button v-on:click="post" variant="primary">投稿</b-button>
       </router-link>
     </div>
   </div>
