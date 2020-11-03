@@ -33,7 +33,6 @@
 import firebase from 'firebase/app';
 import 'firebase/auth'
 import {db} from '../plugins/firebase'
-import { use } from 'vue/types/umd';
 export default {
   name: 'CustomHeader',
   data() {
