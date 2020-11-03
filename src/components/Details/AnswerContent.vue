@@ -1,8 +1,8 @@
 <template>
-  <b-button v-on:click="selected" block>{{ answer.text }} :  {{ answer.votes }} 票</b-button>
-  <!-- <div class="answer-content">
-    <div v-text="answer" class="h2"></div>
-  </div> -->
+  <b-button v-on:click="selected" block>
+    {{ answer.text }} :  {{ answer.votes }}票
+    <img src="../../assets/checkbox-icon-24px.svg" alt="check box icon" v-if="answer.isVoted">
+  </b-button>
 </template>
 
 <script>
