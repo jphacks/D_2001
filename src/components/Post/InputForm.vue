@@ -69,7 +69,8 @@ export default {
               console.log(doc.id);
               optionList.forEach(function( value ) {
                 db.collection("Questions").doc(doc.id).collection("Answers").add({
-                  text : value.text
+                  text : value.text,
+                  votesNum: 0
                 })
                 console.log(value);
               })

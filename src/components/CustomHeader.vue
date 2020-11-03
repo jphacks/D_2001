@@ -2,12 +2,12 @@
   <div id="header-container">
     <div id="header" v-if="!loading">
       <div id="icon-container">
-        <div id="icon"><img src="..\assets\app-logo-24px.svg" width="30" height="30" style="fill: white;" alt="name_it icon"> name_it</div>
+        <div id="icon"><img src="../assets/app-logo-24px.svg" width="30" height="30" style="fill: white;" alt="name_it icon"> name_it</div>
       </div>
       <!-- 投稿ボタン -->
       <router-link to="/post">
         <b-button variant="light" id="post-button">
-          <img src="..\assets\post-icon-24px.svg" alt="post-icon">
+          <img src="../assets/post-icon-24px.svg" alt="post-icon">
           投稿
         </b-button>
       </router-link>
@@ -15,7 +15,7 @@
       <div id="user-container">
         <!-- ログインボタン -->
         <button v-on:click="login" v-if="!isUserExist" class="btn btn-light" id="login-btn">
-          <img src="..\assets\login-icon-24px.svg" alt="login-icon"> 
+          <img src="../assets/login-icon-24px.svg" alt="login-icon">
           login
         </button>
         <!-- ユーザー名 -->
@@ -32,6 +32,7 @@
 <script>
 import firebase from 'firebase/app';
 import 'firebase/auth'
+import {db} from '../plugins/firebase'
 export default {
   name: 'CustomHeader',
   data() {
@@ -50,12 +51,13 @@ export default {
     login: function(){
       console.log("login")
       var provider = new firebase.auth.GithubAuthProvider();
-      firebase.auth().signInWithPopup(provider).then(function(result) {
+      firebase.auth().signInWithPopup(provider).then((result) => {
         // ログイン成功
         var user = result.user;
         console.log(user.displayName)
         this.isUserExist = true
-        this.userName = user.displayName 
+        this.userName = user.displayName
+        this.initializeUserdb(user)
       }).catch(function() {
         // ログイン失敗
       });
@@ -77,6 +79,8 @@ export default {
         console.log("ログイン済み "+ user.displayName)
         this.isUserExist = true
         this.userName = user.displayName
+        //storeに値をuserIDを保存
+        this.$store.dispatch('updateUserID', user.uid)
       } else {
         console.log("未ログイン")
         this.isUserExist = false
@@ -84,6 +88,18 @@ export default {
       // ログイン確認終了
       this.loading = false
     },
+    initializeUserdb: function(user){
+      console.log("DBの初期化  "+ user.uid)
+      db.collection("Users").doc(user.uid).set({
+          name: user.displayName
+        })
+        .then(function() {
+            console.log("Document successfully written!");
+        })
+        .catch(function(error) {
+            console.error("Error writing document: ", error);
+        });
+    }
   },
 }
 </script>

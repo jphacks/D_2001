@@ -12,7 +12,7 @@
       <hr>
       <div class="container">
         <div v-for="(answer, index) in answers" v-bind:key="index" class="options-container">
-          <AnswerContent v-bind:answer="answer.text" />
+          <AnswerContent @sendIndex="setIndex" v-bind:answer="{text: answer.text, index: index, votes: answer.votes}"/>
         </div>
       </div>
       <div class="container">
@@ -20,6 +20,7 @@
         <b-button v-on:click="addAnswer" variant="outline-dark">追加する</b-button>
       </div>
     </b-container>
+    <b-button v-on:click="vote">投票する</b-button>
   </div>
 </template>
 
@@ -35,6 +36,7 @@ export default {
       title: "",
       description: "",
       candidate: "",
+      selectedIndex: "",
       questionID: "",
     }
   },
@@ -43,11 +45,14 @@ export default {
     AnswerContent
   },
   props: [
-    'docID',
+    'docID'
   ],
   computed:{
     getStoreID(){
       return this.$store.getters.docID
+    },
+    getUserID(){
+      return this.$store.getters.userID
     }
   },
   mounted: function(){
@@ -73,7 +78,9 @@ export default {
     ref.collection("Answers").get().then(querySnapshot => {
       querySnapshot.forEach(doc => {
         var answerData = {
+          id: doc.id,
           text: doc.data().text,
+          votes: doc.data().votesNum,
         }
         this.answers.push(answerData)
       })
@@ -81,17 +88,102 @@ export default {
   },
   methods:{
     addAnswer: function(){
-      console.log(this.candidate)
+      //回答を追加する
       db.collection('Questions').doc(this.questionID).collection('Answers').add({
         text: this.candidate
       })
       .then(() => {
         console.log("Answer successfully written!");
         var answerData = {
-          text: this.candidate
+          text: this.candidate,
+          votesNum: 0
         }
         this.answers.push(answerData)
         this.candidate = ""
+      })
+      .catch(function(error) {
+          console.error("Error writing document: ", error);
+      });
+    },
+    setIndex: function(index){
+      this.selectedIndex = index
+    },
+    vote: async function(){
+      var answerID = this.answers[this.selectedIndex].id
+      var userRef = db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.questionID)
+      var dbRef = db.collection('Questions').doc(this.questionID).collection('Answers')
+      await this.controlVote(userRef, dbRef, answerID)
+      await this.updateAnswerID(userRef, answerID)
+    },
+    controlVote: function(userRef, dbRef, answerID){
+      return new Promise(resolve => {
+        // 同じ回答に投票していないか確認する
+        userRef.get().then(snapshot => {
+          var preAnswerId = snapshot.data().answerId
+          if(snapshot.exists){
+            if(preAnswerId != null){
+              if(preAnswerId == answerID){
+                // 前回を同じ回答に投票している
+                console.log("同じ回答です")
+              } else {
+                // 投票する回答に投票数を1増やす
+                dbRef.doc(answerID).get().then(snapshot => {
+                  if(snapshot.exists){
+                    var num = snapshot.data().votesNum
+                    var ansText = snapshot.data().text
+                    // 表示する票数を増やす
+                    for(var i in this.answers){
+                      if(ansText == this.answers[i].text){
+                        this.answers[i].votes++
+                      }
+                    }
+                    dbRef.doc(answerID).update({
+                      votesNum: num+1
+                    })
+                  }
+                })
+                // 前に回答していた投票を1減らす
+                dbRef.doc(preAnswerId).get().then(snapshot => {
+                  if(snapshot.exists){
+                    var preAnsNum = snapshot.data().votesNum
+                    var preAnsText = snapshot.data().text
+                    // 表示する票数を減らす
+                    for(var i in this.answers){
+                      if(preAnsText == this.answers[i].text){
+                        this.answers[i].votes--
+                      }
+                    }
+                    dbRef.doc(preAnswerId).update({
+                      votesNum: preAnsNum-1
+                    })
+                  }
+                  resolve(answerID)
+                })
+              }
+            } else{
+              // 初めての投票
+              // 投票する回答に投票数を1増やす
+              dbRef.doc(answerID).get().then(snapshot => {
+                if(snapshot.exists){
+                  var num = snapshot.data().votesNum
+                  dbRef.doc(answerID).update({
+                    votesNum: num+1
+                  })
+                resolve(answerID)
+                }
+              })
+            }
+          }
+        })
+      })
+    },
+    updateAnswerID: async function(userRef, answerID){
+      // Usersテーブルに投票した回答を保存する
+      userRef.set({
+        answerId: answerID
+      })
+      .then(function() {
+          console.log("Document successfully written!");
       })
       .catch(function(error) {
           console.error("Error writing document: ", error);
