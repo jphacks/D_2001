@@ -107,20 +107,46 @@ export default {
     setIndex: function(index){
       this.selectedIndex = index
     },
-    vote: function(){
+    vote: async function(){
       var answerID = this.answers[this.selectedIndex].id
       var userRef = db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.questionID)
       var dbRef = db.collection('Questions').doc(this.questionID).collection('Answers')
-      // 同じ回答に投票していないか確認する
-      userRef.get().then(snapshot => {
-        console.log("先にやって")
-        var preAnswerId = snapshot.data().answerId
-        if(snapshot.exists){
-          if(preAnswerId != null){
-            if(preAnswerId == answerID){
-              // 前回を同じ回答に投票している
-              console.log("同じ回答です")
-            } else {
+      await this.controlVote(userRef, dbRef, answerID)
+      await this.updateAnswerID(userRef, answerID)
+    },
+    controlVote: function(userRef, dbRef, answerID){
+      return new Promise(function(resolve){
+        // 同じ回答に投票していないか確認する
+        userRef.get().then(snapshot => {
+          var preAnswerId = snapshot.data().answerId
+          if(snapshot.exists){
+            if(preAnswerId != null){
+              if(preAnswerId == answerID){
+                // 前回を同じ回答に投票している
+                console.log("同じ回答です")
+              } else {
+                // 投票する回答に投票数を1増やす
+                dbRef.doc(answerID).get().then(snapshot => {
+                  if(snapshot.exists){
+                    var num = snapshot.data().votesNum
+                    dbRef.doc(answerID).update({
+                      votesNum: num+1
+                    })
+                  }
+                })
+                // 前に回答していた投票を1減らす
+                dbRef.doc(preAnswerId).get().then(snapshot => {
+                  if(snapshot.exists){
+                    var preAnsNum = snapshot.data().votesNum
+                    dbRef.doc(preAnswerId).update({
+                      votesNum: preAnsNum-1
+                    })
+                  }
+                  resolve(answerID)
+                })
+              }
+            } else{
+              // 初めての投票
               // 投票する回答に投票数を1増やす
               dbRef.doc(answerID).get().then(snapshot => {
                 if(snapshot.exists){
@@ -128,38 +154,20 @@ export default {
                   dbRef.doc(answerID).update({
                     votesNum: num+1
                   })
-                }
-              })
-              // 前に回答していた投票を1減らす
-              dbRef.doc(preAnswerId).get().then(snapshot => {
-                if(snapshot.exists){
-                  var preAnsNum = snapshot.data().votesNum
-                  dbRef.doc(preAnswerId).update({
-                    votesNum: preAnsNum-1
-                  })
+                resolve(answerID)
                 }
               })
             }
-          } else{
-            // 初めての投票
-            // 投票する回答に投票数を1増やす
-            dbRef.doc(answerID).get().then(snapshot => {
-              if(snapshot.exists){
-                var num = snapshot.data().votesNum
-                dbRef.doc(answerID).update({
-                  votesNum: num+1
-                })
-              }
-            })
           }
-        }
+        })
       })
+    },
+    updateAnswerID: async function(userRef, answerID){
       // Usersテーブルに投票した回答を保存する
       userRef.set({
         answerId: answerID
       })
       .then(function() {
-        console.log("後にやる")
           console.log("Document successfully written!");
       })
       .catch(function(error) {
