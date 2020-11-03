@@ -36,7 +36,7 @@ export default {
       title: "",
       description: "",
       candidate: "",
-      selectedIndex: ""
+      selectedIndex: "",
       questionID: "",
     }
   },
@@ -75,6 +75,7 @@ export default {
     ref.collection("Answers").get().then(querySnapshot => {
       querySnapshot.forEach(doc => {
         var answerData = {
+          id: doc.id,
           text: doc.data().text,
         }
         this.answers.push(answerData)
@@ -103,16 +104,15 @@ export default {
       this.selectedIndex = index
     },
     vote: function(){
-      console.log(this.selectedIndex)
-      db.collection('Users').add({
-        name: "test"
-      })
-      .then(function() {
-          console.log("Document successfully written!");
-      })
-      .catch(function(error) {
-          console.error("Error writing document: ", error);
-      });
+      db.collection("Users").doc("3ATDk0SAaSrxgFQRao7u").collection("Questions").doc(this.questionID).set({
+          answerId: this.answers[this.selectedIndex].id
+        })
+        .then(function() {
+            console.log("Document successfully written!");
+        })
+        .catch(function(error) {
+            console.error("Error writing document: ", error);
+        });
     }
   },
 }
