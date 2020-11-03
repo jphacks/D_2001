@@ -57,7 +57,7 @@ export default {
     ref.collection("Answers").get().then(querySnapshot => {
       querySnapshot.forEach(doc => {
         var answerData = {
-          text: doc.data().content.text,
+          text: doc.data().text,
         }
         this.answers.push(answerData)
       })
