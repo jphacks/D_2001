@@ -37,6 +37,7 @@ export default {
       description: "",
       candidate: "",
       selectedIndex: ""
+      questionID: "",
     }
   },
   components: {
@@ -46,8 +47,23 @@ export default {
   props: [
     'docID'
   ],
+  computed:{
+    getStoreID(){
+      return this.$store.getters.docID
+    }
+  },
   mounted: function(){
-    var ref = db.collection("Questions").doc(this.docID)
+    if(this.docID == null){
+      //ページリロード
+      //storeから値を取得
+      this.questionID = this.getStoreID
+    } else{
+      //ページ遷移でのアクセス
+      this.questionID = this.docID
+      //storeに値を保存
+      this.$store.dispatch('doUpdate', this.questionID)
+    }
+    var ref = db.collection("Questions").doc(this.questionID)
     // 投稿のタイトルと詳細を取得
     ref.get().then(doc => {
       if(doc.exists){
@@ -67,7 +83,8 @@ export default {
   },
   methods:{
     addAnswer: function(){
-      db.collection('Questions').doc(this.docID).collection('Answers').add({
+      console.log(this.candidate)
+      db.collection('Questions').doc(this.questionID).collection('Answers').add({
         text: this.candidate
       })
       .then(() => {

@@ -12,7 +12,9 @@
     "core-js": "^3.6.5",
     "firebase": "^8.0.0",
     "vue": "^2.6.11",
-    "vue-router": "^3.4.8"
+    "vue-router": "^3.4.8",
+    "vuex": "^3.5.1",
+    "vuex-persistedstate": "^4.0.0-beta.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
