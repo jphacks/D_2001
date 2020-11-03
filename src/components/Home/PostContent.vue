@@ -1,8 +1,8 @@
 <template>
   <div class="post-content" @click="toDetails()">
     <div class="post-texts">
-      <div v-text="title" class="h2"></div>
-      <div v-text="description"></div>
+      <div v-text="title" class="title-texts"></div>
+      <div v-text="description" class="description-texts"></div>
     </div>
   </div>
 </template>
@@ -37,18 +37,27 @@ export default{
 
 <style>
 .post-content{
+  height: 100px;
   border-bottom: 2px solid;
   border-color: #dddddd;
-  margin: 2px auto;
-  height: 100px;
-}
-.post-texts{
-  width: 80%;
-  margin: 0 auto;
-  padding-top: 10px;
-  text-align: left;
-}
-.post-content :hover{
+  padding: 7px 30px;
   cursor: pointer;
+}
+
+.post-texts > *{
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
+.title-texts{
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 3px;
+  -webkit-line-clamp: 1;
+}
+
+.description-texts{
+  -webkit-line-clamp: 2;
 }
 </style>
