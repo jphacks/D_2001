@@ -1,8 +1,8 @@
 <template>
-  <b-button v-on:click="selected" block>{{ answer.text }} :  {{ answer.votes }} 票</b-button>
-  <!-- <div class="answer-content">
-    <div v-text="answer" class="h2"></div>
-  </div> -->
+  <b-button v-on:click="selected" block class="answer-container">
+    <div class="answer-text">{{ answer.text }} :</div>
+    <div class="answer-votes">{{ answer.votes }} 票</div>
+  </b-button>
 </template>
 
 <script>
@@ -17,18 +17,20 @@ export default{
 }
 </script>
 
-<style>
-.answer-content{
-  text-align: center;
-  width: 500px;
-  height: 70px;
-  border: 2px solid;
-  border-color: gray;
-  border-radius: 2em;
-  margin: 2px auto;
-  padding-top: 15px;
+<style scoped>
+.answer-container{
+  text-align: left;
+  display: flex;
 }
-.answer-content :hover{
-  cursor: pointer;
+
+.answer-text{
+  margin-right: auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.answer-votes{
+  text-align: right;
 }
 </style>
