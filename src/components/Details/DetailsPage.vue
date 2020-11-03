@@ -109,9 +109,40 @@ export default {
     },
     vote: function(){
       var answerID = this.answers[this.selectedIndex].id
-        console.log(answerID)
+      var userRef = db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.questionID)
+      var dbRef = db.collection('Questions').doc(this.questionID).collection('Answers')
+      // 同じ回答に投票していないか確認する
+      userRef.get().then(snapshot => {
+        var preAnswerId = snapshot.data().answerId
+        if(snapshot.exists && preAnswerId != null){
+          if(preAnswerId == answerID){
+            // 前回を同じ回答に投票している
+            console.log("同じ回答です")
+            return
+          } else {
+            // 投票する回答に投票数を1増やす
+            dbRef.doc(answerID).get().then(snapshot => {
+              if(snapshot.exists){
+                var num = snapshot.data().votesNum
+                dbRef.doc(answerID).update({
+                  votesNum: num+1
+                })
+              }
+            })
+            // 前に回答していた投票を1減らす
+            dbRef.doc(preAnswerId).get().then(snapshot => {
+              if(snapshot.exists){
+                var num = snapshot.data().votesNum
+                dbRef.doc(preAnswerId).update({
+                  votesNum: num-1
+                })
+              }
+            })
+          }
+        }
+      })
       // Usersテーブルに投票した回答を保存する
-      db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.questionID).set({
+      userRef.set({
         answerId: answerID
       })
       .then(function() {
@@ -120,16 +151,6 @@ export default {
       .catch(function(error) {
           console.error("Error writing document: ", error);
       });
-      // 投票数を１加算する
-      var dbRef = db.collection('Questions').doc(this.questionID).collection('Answers').doc(answerID)
-      dbRef.get().then(snapshot => {
-        if(snapshot.exists){
-          var num = snapshot.data().votesNum
-          dbRef.update({
-            votesNum: num+1
-          })
-        }
-      })
     }
   },
 }
