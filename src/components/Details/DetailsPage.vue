@@ -44,15 +44,13 @@ export default {
       candidate: "",
       selectedIndex: "",
       questionID: "",
+      docID: "",
     }
   },
   components: {
     CustomHeader,
     AnswerContent
   },
-  props: [
-    'docID'
-  ],
   computed:{
     getStoreID(){
       return this.$store.getters.docID
@@ -62,6 +60,7 @@ export default {
     }
   },
   mounted: async function(){
+    this.docID = this.$route.params.id
     if(this.docID == null){
       //ページリロード
       //storeから値を取得
