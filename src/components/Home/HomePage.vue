@@ -36,5 +36,6 @@ export default {
 
 .contents-container {
   margin-top: 30px;
+  margin-bottom: 30px;
 }
 </style>
