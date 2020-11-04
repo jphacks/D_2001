@@ -11,17 +11,14 @@ jobs:
           name: 'Node.js version check'          
           command: node --version
       - checkout
-#       - run:
-#           name: 'Install Firebase CLI'
-#           command: npm install --save-dev firebase-tools
-#       - run:
-#           name: 'Install npm packages'
-#           command: npm install
+      - run:
+          name: 'Install Firebase CLI'
+          command: npm install --save-dev firebase-tools
       - restore_cache:
           keys:
             - v2-npm-lock-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "package.json" }}
       - run:
-          name: Install dependencies
+          name: 'Install dependencies'
           command: npm install
       - save_cache:
           key: v2-npm-lock-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "package.json" }}
