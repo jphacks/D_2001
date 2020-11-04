@@ -83,6 +83,7 @@ export default {
     // 回答一覧を取得
     ref.collection("Answers").get().then(querySnapshot => {
       querySnapshot.forEach(async (doc) => {
+        console.log(doc.id)
         var isVoted = await this.isVotedBySelf(doc.id)
         console.log(isVoted)
         var answerData = {
@@ -99,13 +100,16 @@ export default {
     addAnswer: function(){
       //回答を追加する
       db.collection('Questions').doc(this.questionID).collection('Answers').add({
-        text: this.candidate
+        text: this.candidate,
+        votesNum: 0
       })
-      .then(() => {
+      .then((doc) => {
         console.log("Answer successfully written!");
         var answerData = {
+          id: doc.id,
           text: this.candidate,
-          votesNum: 0
+          votes: 0,
+          isVoted: false
         }
         this.answers.push(answerData)
         this.candidate = ""
@@ -118,11 +122,17 @@ export default {
       this.selectedIndex = index
     },
     vote: async function(){
-      var answerID = this.answers[this.selectedIndex].id
-      var userRef = db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.questionID)
-      var dbRef = db.collection('Questions').doc(this.questionID).collection('Answers')
-      await this.controlVote(userRef, dbRef, answerID)
-      await this.updateAnswerID(userRef, answerID)
+      console.log(CustomHeader.data().currentuser)
+      if(CustomHeader.data().currentuser == null){
+        //ログインしていない
+        alert("投票するにはログインしてください")
+      } else {
+        var answerID = this.answers[this.selectedIndex].id
+        var userRef = db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.questionID)
+        var dbRef = db.collection('Questions').doc(this.questionID).collection('Answers')
+        await this.controlVote(userRef, dbRef, answerID)
+        await this.updateAnswerID(userRef, answerID)
+      }
     },
     controlVote: function(userRef, dbRef, answerID){
       return new Promise(resolve => {
@@ -141,6 +151,7 @@ export default {
                 for(var i in this.answers){
                   if(ansText == this.answers[i].text){
                     this.answers[i].votes++
+                    this.answers[i].isVoted = !this.answers[i].isVoted
                   }
                 }
                 dbRef.doc(answerID).update({
@@ -219,6 +230,8 @@ export default {
             } else {
               resolve(false)
             }
+          } else{
+            resolve(false)
           }
         })
       })
