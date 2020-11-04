@@ -14,7 +14,12 @@
     <div class="container">
       <h2>選択肢</h2>
       <div v-for="(option,index) in optionList" :key="index" class="option">
-        <b-form-input v-model="option.text" placeholder="選択肢"></b-form-input>
+        <b-input-group>
+          <b-form-input v-model="option.text" placeholder="選択肢" class=”form-inline”></b-form-input>
+          <b-button variant="light">
+            <img src="../../assets/delete-icon-24px.svg" alt="delete-icon">
+          </b-button>
+        </b-input-group>
       </div>
       <b-button v-on:click="addOption" variant="secondary">選択肢を追加</b-button>
     </div>
