@@ -3,6 +3,7 @@
     <div class="post-texts">
       <div v-text="title" class="title-texts"></div>
       <div v-text="description" class="description-texts"></div>
+      <div v-text="diffTime"></div>
     </div>
   </div>
 </template>
@@ -16,6 +17,7 @@ export default{
     return{
       title: "",
       description: "",
+      diffTime: "",
     }
   },
   mounted: function() {
@@ -24,12 +26,27 @@ export default{
       if(doc.exists){
         this.title = doc.data().title
         this.description = doc.data().description
-      }
+        this.diffTime = this.getDiffTime(doc.data().time.seconds)
+      }      
     })
   },
   methods: {
     toDetails(){
       this.$router.push({name: 'DetailsPage', params: {docID: this.docID}});
+    },
+    getDiffTime: function(postTime){
+      var now = new Date()
+      // 差分（ミリ秒
+      var milliDiffTime = now.getTime() - new Date(postTime * 1000).getTime()
+      var hourDiffTime = Math.floor(milliDiffTime / 1000 / 60 / 60)
+      if(hourDiffTime < 1){
+        return "1時間以内"
+      } else if (hourDiffTime >= 1 && hourDiffTime < 24){
+        return hourDiffTime + "時間前"
+      } else {
+        return Math.floor(hourDiffTime / 24) + "日前"
+      }
+      
     }
   }
 }
