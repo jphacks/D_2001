@@ -1,8 +1,8 @@
 <template>
   <b-button v-on:click="selected" block class="answer-container">
-    <div class="answer-text">{{ answer.text }} :</div>
+    <div class="answer-text">{{ answer.text }}</div>
+    <img src="../../assets/checkbox-icon-24px.svg" alt="check box icon" v-if="answer.isVoted" class="check-icon">
     <div class="answer-votes">{{ answer.votes }} 票</div>
-    <img src="../../assets/checkbox-icon-24px.svg" alt="check box icon" v-if="answer.isVoted">
   </b-button>
 </template>
 
@@ -29,6 +29,10 @@ export default{
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.check-icon{
+  margin-right: 5px;
 }
 
 .answer-votes{
