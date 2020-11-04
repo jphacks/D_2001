@@ -83,9 +83,7 @@ export default {
     // 回答一覧を取得
     ref.collection("Answers").get().then(querySnapshot => {
       querySnapshot.forEach(async (doc) => {
-        console.log(doc.id)
         var isVoted = await this.isVotedBySelf(doc.id)
-        console.log(isVoted)
         var answerData = {
           id: doc.id,
           text: doc.data().text,
@@ -122,7 +120,6 @@ export default {
       this.selectedIndex = index
     },
     vote: async function(){
-      console.log(CustomHeader.data().currentuser)
       if(CustomHeader.data().currentuser == null){
         //ログインしていない
         alert("投票するにはログインしてください")
