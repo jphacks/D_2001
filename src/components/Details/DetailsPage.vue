@@ -83,6 +83,7 @@ export default {
     // 回答一覧を取得
     ref.collection("Answers").get().then(querySnapshot => {
       querySnapshot.forEach(async (doc) => {
+        console.log(doc.id)
         var isVoted = await this.isVotedBySelf(doc.id)
         console.log(isVoted)
         var answerData = {
@@ -141,6 +142,7 @@ export default {
                 for(var i in this.answers){
                   if(ansText == this.answers[i].text){
                     this.answers[i].votes++
+                    this.answers[i].isVoted = !this.answers[i].isVoted
                   }
                 }
                 dbRef.doc(answerID).update({
@@ -219,6 +221,8 @@ export default {
             } else {
               resolve(false)
             }
+          } else{
+            resolve(false)
           }
         })
       })
