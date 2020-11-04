@@ -22,7 +22,7 @@ jobs:
           command: npm run build
       - run:
           name: 'Deploy to Hosting'
-          command: ./node_modules/.bin/firebase deploy --project "$FIREBASE_PROJECT_ID" --token="$FIREBASE_TOKEN"
+          command: firebase deploy --project "$FIREBASE_PROJECT_ID" --token="$FIREBASE_TOKEN"
   lint:
     docker:
       - image: node:14
