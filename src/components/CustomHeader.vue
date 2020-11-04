@@ -8,12 +8,10 @@
         <div class="name-it-title">name_it</div>
       </div>
       <!-- 投稿ボタン -->
-      <router-link to="/post">
-        <b-button variant="light" class="post-button">
-          <img src="../assets/post-icon-24px.svg" alt="post-icon">
-          投稿
-        </b-button>
-      </router-link>
+      <b-button variant="light" class="post-button" @click="toPostPage">
+        <img src="../assets/post-icon-24px.svg" alt="post-icon">
+        投稿
+      </b-button>
       <!-- ユーザー情報のコンテナ -->
       <div id="user-container">
         <!-- ログインボタン -->
@@ -103,6 +101,13 @@ export default {
         .catch(function(error) {
             console.error("Error writing document: ", error);
         });
+    },
+    toPostPage: function(){
+      if(this.isUserExist){
+        this.$router.push({name: 'PostPage'});
+      } else {
+        alert("投稿するにはログインしてください")
+      }
     }
   },
 }
