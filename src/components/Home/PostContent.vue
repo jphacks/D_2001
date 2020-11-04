@@ -3,7 +3,7 @@
     <div class="post-texts">
       <div v-text="title" class="title-texts"></div>
       <div v-text="description" class="description-texts"></div>
-      <div v-text="diffTime"></div>
+      <div v-text="diffTime" class="elapsed-time-texts"></div>
     </div>
   </div>
 </template>
@@ -65,16 +65,27 @@ export default{
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  margin-bottom: 3px;
+}
+
+.post-texts:last-child{
+  margin-bottom: 0;
 }
 
 .title-texts{
   font-size: 1.3rem;
   font-weight: bold;
-  margin-bottom: 3px;
   -webkit-line-clamp: 1;
 }
 
 .description-texts{
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
+}
+
+.elapsed-time-texts{
+  vertical-align: bottom;
+  text-align: right;
+  font-size: 0.8rem;
+  color: gray;
 }
 </style>
