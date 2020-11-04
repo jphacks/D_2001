@@ -44,6 +44,11 @@ export default {
       description: ""
     };
   },
+  computed:{
+    getUserID(){
+      return this.$store.getters.userID
+    }
+  },
   methods: {
     addOption() {
       const option ={
@@ -66,7 +71,8 @@ export default {
           db.collection('Questions').add({
             title : this.title,
             description : this.description,
-            time: new Date()
+            time: new Date(),
+            userID: this.getUserID,
           })
           .then(function() {
               console.log("Document successfully written!");
