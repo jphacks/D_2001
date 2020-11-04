@@ -240,6 +240,8 @@ export default {
 <style scoped>
 #contents-container{
   padding: 30px;
+  margin-top: 30px;
+  background-color: #FFFFFF;
 }
 
 .container {

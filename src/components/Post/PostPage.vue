@@ -20,7 +20,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #contents-container {
   margin-top: 30px;
 }
