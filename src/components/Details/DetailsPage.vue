@@ -122,11 +122,17 @@ export default {
       this.selectedIndex = index
     },
     vote: async function(){
-      var answerID = this.answers[this.selectedIndex].id
-      var userRef = db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.questionID)
-      var dbRef = db.collection('Questions').doc(this.questionID).collection('Answers')
-      await this.controlVote(userRef, dbRef, answerID)
-      await this.updateAnswerID(userRef, answerID)
+      console.log(CustomHeader.data().currentuser)
+      if(CustomHeader.data().currentuser == null){
+        //ログインしていない
+        alert("投票するにはログインしてください")
+      } else {
+        var answerID = this.answers[this.selectedIndex].id
+        var userRef = db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.questionID)
+        var dbRef = db.collection('Questions').doc(this.questionID).collection('Answers')
+        await this.controlVote(userRef, dbRef, answerID)
+        await this.updateAnswerID(userRef, answerID)
+      }
     },
     controlVote: function(userRef, dbRef, answerID){
       return new Promise(resolve => {
