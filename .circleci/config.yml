@@ -14,15 +14,25 @@ jobs:
 #       - run:
 #           name: 'Install Firebase CLI'
 #           command: npm install --save-dev firebase-tools
+#       - run:
+#           name: 'Install npm packages'
+#           command: npm install
+      - restore_cache:
+          keys:
+            - v2-npm-lock-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "package.json" }}
       - run:
-          name: 'Install npm packages'
+          name: Install dependencies
           command: npm install
+      - save_cache:
+          key: v2-npm-lock-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "package.json" }}
+          paths:
+            - node_modules
       - run:
           name: 'Run build'
           command: npm run build
       - run:
           name: 'Deploy to Hosting'
-          command: firebase deploy --project "$FIREBASE_PROJECT_ID" --token="$FIREBASE_TOKEN"
+          command: node_modules/.bin/firebase deploy --project "$FIREBASE_PROJECT_ID" --token="$FIREBASE_TOKEN"
   lint:
     docker:
       - image: node:14
