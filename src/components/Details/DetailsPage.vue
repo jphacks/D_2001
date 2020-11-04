@@ -15,7 +15,7 @@
       <!-- 選択肢欄 -->
       <div class="container">
         <div v-for="(answer, index) in answers" v-bind:key="index" class="options-container">
-          <AnswerContent @sendIndex="setIndex" v-bind:answer="{text: answer.text, index: index, votes: answer.votes}"/>
+          <AnswerContent @sendIndex="setIndex" v-bind:answer="{text: answer.text, index: index, votes: answer.votes, isVoted: answer.isVoted}"/>
         </div>
       </div>
       <!-- 選択肢追加入力欄 -->
@@ -61,7 +61,7 @@ export default {
       return this.$store.getters.userID
     }
   },
-  mounted: function(){
+  mounted: async function(){
     if(this.docID == null){
       //ページリロード
       //storeから値を取得
@@ -82,11 +82,14 @@ export default {
     })
     // 回答一覧を取得
     ref.collection("Answers").get().then(querySnapshot => {
-      querySnapshot.forEach(doc => {
+      querySnapshot.forEach(async (doc) => {
+        var isVoted = await this.isVotedBySelf(doc.id)
+        console.log(isVoted)
         var answerData = {
           id: doc.id,
           text: doc.data().text,
           votes: doc.data().votesNum,
+          isVoted: isVoted
         }
         this.answers.push(answerData)
       })
@@ -162,6 +165,7 @@ export default {
                     for(var i in this.answers){
                       if(ansText == this.answers[i].text){
                         this.answers[i].votes++
+                        this.answers[i].isVoted = !this.answers[i].isVoted
                       }
                     }
                     dbRef.doc(answerID).update({
@@ -178,6 +182,7 @@ export default {
                     for(var i in this.answers){
                       if(preAnsText == this.answers[i].text){
                         this.answers[i].votes--
+                        this.answers[i].isVoted = !this.answers[i].isVoted
                       }
                     }
                     dbRef.doc(preAnswerId).update({
@@ -203,6 +208,20 @@ export default {
       .catch(function(error) {
           console.error("Error writing document: ", error);
       });
+    },
+    isVotedBySelf: function(answerID){
+      return new Promise(resolve => {
+        db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.questionID)
+        .get().then(snapshot => {
+          if(snapshot.exists){
+            if(snapshot.data().answerId == answerID){
+              resolve(true)
+            } else {
+              resolve(false)
+            }
+          }
+        })
+      })
     }
   },
 }
