@@ -12,8 +12,8 @@ jobs:
           command: node --version
       - checkout
       - run:
-          name: Test
-          command: npm test
+          name: 'Install Firebase CLI'
+          command: npm install --save-dev firebase-tools
       - run:
           name: 'Run build'
           command: npm run build
