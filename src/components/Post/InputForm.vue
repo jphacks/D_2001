@@ -28,9 +28,7 @@
       <router-link to="/">
         <b-button v-on:click="cancel" variant="outline-dark">戻る</b-button>
       </router-link>
-      <router-link to="/">
-        <b-button v-on:click="post" variant="primary">投稿</b-button>
-      </router-link>
+      <b-button v-on:click="post" variant="primary">投稿</b-button>
     </div>
   </div>
 </template>
@@ -63,38 +61,43 @@ export default {
     post() {
       var optionList = this.optionList
       if(this.title != "" && this.description != ""){
-        //firestoreにタイトルと詳細をpushする
-        db.collection('Questions').add({
-          title : this.title,
-          description : this.description
-        })
-        .then(function() {
-            console.log("Document successfully written!");
-        })
-        .catch(function(error) {
-            console.error("Error writing document: ", error);
-        });
-        db.collection("Questions").where("title", "==", this.title).where("description", "==", this.description)
-        .get()
-        .then(function(querySnapshot) {
-            querySnapshot.forEach(function(doc) {
-              console.log(doc.id);
-              optionList.forEach(function( value ) {
-                db.collection("Questions").doc(doc.id).collection("Answers").add({
-                  text : value.text,
-                  votesNum: 0
+        if(this.optionList.length >= 1){
+          //firestoreにタイトルと詳細をpushする
+          db.collection('Questions').add({
+            title : this.title,
+            description : this.description
+          })
+          .then(function() {
+              console.log("Document successfully written!");
+          })
+          .catch(function(error) {
+              console.error("Error writing document: ", error);
+          });
+          db.collection("Questions").where("title", "==", this.title).where("description", "==", this.description)
+          .get()
+          .then(function(querySnapshot) {
+              querySnapshot.forEach(function(doc) {
+                console.log(doc.id);
+                optionList.forEach(function( value ) {
+                  db.collection("Questions").doc(doc.id).collection("Answers").add({
+                    text : value.text,
+                    votesNum: 0
+                  })
+                  console.log(value);
                 })
-                console.log(value);
-              })
-            });
-        })
-        .then(function() {
-            console.log("Answer successfully written!");
-        })
-        .catch(function(error) {
-            console.log("Error getting documents: ", error);
-        });
-
+              });
+          })
+          .then(function() {
+              console.log("Answer successfully written!");
+          })
+          .catch(function(error) {
+              console.log("Error getting documents: ", error);
+          });
+          // HomePageに遷移する
+          this.$router.push({name: 'HomePage', params: {docID: this.docID}});
+        } else{
+          alert("選択肢を追加してください．")
+        }
       } else {
         alert("タイトルまたは詳細が空欄です.")
       }
