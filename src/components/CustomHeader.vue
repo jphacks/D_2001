@@ -1,7 +1,7 @@
 <template>
   <div id="header-container">
     <b-container class="header" v-if="!loading">
-      <div class="icon-container">
+      <div class="icon-container" v-on:click="toHomePage">
         <div>
           <img src="../assets/name_it_icon.png" alt="name_it icon" class="name-it-icon">
         </div>
@@ -108,6 +108,14 @@ export default {
       } else {
         alert("投稿するにはログインしてください")
       }
+    },
+    toHomePage: function(){
+      if(this.$route.path == "/"){
+        // ページリロード
+        // this.$router.go({ name: 'HomePage' })
+      } else{
+        this.$router.push({name: 'HomePage'});
+      }
     }
   },
 }
@@ -135,6 +143,10 @@ export default {
 .icon-container {
   margin-right: auto;
   display: flex;
+}
+
+.icon-container :hover{
+  cursor: pointer;
 }
 
 .name-it-icon{

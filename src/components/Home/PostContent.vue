@@ -21,7 +21,6 @@ export default{
     }
   },
   mounted: function() {
-    console.log(this.docID)
     db.collection('Questions').doc(this.docID).get().then(doc => {
       if(doc.exists){
         this.title = doc.data().title
@@ -35,9 +34,11 @@ export default{
       this.$router.push({name: 'DetailsPage', params: {docID: this.docID}});
     },
     getDiffTime: function(postTime){
+      //現在の時間
       var now = new Date()
-      // 差分（ミリ秒
+      // 差分（ミリ秒）
       var milliDiffTime = now.getTime() - new Date(postTime * 1000).getTime()
+      // 差分（時間）
       var hourDiffTime = Math.floor(milliDiffTime / 1000 / 60 / 60)
       if(hourDiffTime < 1){
         return "1時間以内"
@@ -46,7 +47,6 @@ export default{
       } else {
         return Math.floor(hourDiffTime / 24) + "日前"
       }
-      
     }
   }
 }
