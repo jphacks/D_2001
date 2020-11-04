@@ -1,30 +1,27 @@
 <template>
   <div id="app">
-    <CustomHeader/>
-    <InputForm/>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import CustomHeader from './components/CustomHeader.vue'
-import InputForm from './components/InputForm.vue'
+import router from './router'
+import store from './store'
 
 export default {
   name: 'App',
-  components: {
-    CustomHeader,
-    InputForm,
-  }
+  router,
+  store,
 }
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  color: #333333;
+  background-color: #F6F6F4;
+  min-height: 100vh;
+  padding-top: 64px;
 }
 </style>
