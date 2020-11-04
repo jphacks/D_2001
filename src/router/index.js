@@ -22,7 +22,7 @@ export default new Router({
       component: PostPage
     },
     {
-      path: '/details',
+      path: '/details/:id',
       name: 'DetailsPage',
       component: DetailsPage,
       props: true
