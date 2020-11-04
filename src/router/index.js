@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import HomePage from '../components/Home/HomePage'
 import PostPage from '../components/Post/PostPage'
 import DetailsPage from '../components/Details/DetailsPage'
+import ProfilePage from '../components/Profile/ProfilePage'
 
 Vue.use(Router)
 
@@ -25,6 +26,11 @@ export default new Router({
       name: 'DetailsPage',
       component: DetailsPage,
       props: true
-    }
+    },
+    {
+      path: '/profile',
+      name: 'ProfilePage',
+      component: ProfilePage,
+    },
   ]
 })

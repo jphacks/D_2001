@@ -19,7 +19,7 @@
           <img src="../assets/login-icon-24px.svg" alt="login-icon"> login
         </b-button>
         <!-- ユーザー名 -->
-        <div v-if="isUserExist">
+        <div v-if="isUserExist" v-on:click="toProfilePage" id="user-text-container">
           <div id="user-name-text"> {{ userName }} </div>
         </div> 
         <!-- ログアウトボタン -->
@@ -80,9 +80,14 @@ export default {
       if (user) {
         console.log("ログイン済み "+ user.displayName)
         this.isUserExist = true
-        this.userName = user.displayName
+        if(user.displayName == ""){
+          this.userName = "Guest"
+        } else {
+          this.userName = user.displayName
+        }
         //storeに値をuserIDを保存
         this.$store.dispatch('updateUserID', user.uid)
+        this.$store.dispatch('updateUserName', this.userName)
       } else {
         console.log("未ログイン")
         this.isUserExist = false
@@ -92,7 +97,18 @@ export default {
     },
     initializeUserdb: function(user){
       console.log("DBの初期化  "+ user.uid)
-      db.collection("Users").doc(user.uid).set({
+      if(user.displayName == ""){
+        db.collection("Users").doc(user.uid).set({
+          name: "Guest"
+        })
+        .then(function() {
+            console.log("Document successfully written!");
+        })
+        .catch(function(error) {
+            console.error("Error writing document: ", error);
+        });
+      } else {
+        db.collection("Users").doc(user.uid).set({
           name: user.displayName
         })
         .then(function() {
@@ -101,6 +117,7 @@ export default {
         .catch(function(error) {
             console.error("Error writing document: ", error);
         });
+      }
     },
     toPostPage: function(){
       if(this.isUserExist){
@@ -116,7 +133,16 @@ export default {
       } else{
         this.$router.push({name: 'HomePage'});
       }
-    }
+    },
+    toProfilePage: function(){
+      console.log("profile")
+      if(this.$route.path == "/profile"){
+        // ページリロード
+        // this.$router.go({ name: 'ProfilePage' })
+      } else{
+        this.$router.push({name: 'ProfilePage'});
+      }
+    },
   },
 }
 </script>
@@ -180,6 +206,10 @@ export default {
   margin-left: 10px;
 }
 
+#user-text-container{
+  cursor: pointer;
+}
+
 #user-name-text{
   /* テキストの高さ揃え */
   padding-top: 9px;
@@ -189,6 +219,6 @@ export default {
   font-size: 1.2rem;
   overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis;;
+  text-overflow: ellipsis;
 }
 </style>

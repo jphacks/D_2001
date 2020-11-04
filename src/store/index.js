@@ -6,7 +6,8 @@ Vue.use(Vuex)
 
 const initialState = {
   docID: '',
-  userID: ''
+  userID: '',
+  userName: '',
 }
 
 const store = new Vuex.Store({
@@ -22,6 +23,9 @@ const store = new Vuex.Store({
     },
     userID(state){
       return state.userID
+    },
+    userName(state){
+      return state.userName
     }
   },
 
@@ -34,7 +38,9 @@ const store = new Vuex.Store({
     },
     setUserID(state, payload){
       state.userID = payload
-      console.log(state.userID)
+    },
+    setUserName(state, payload){
+      state.userName = payload
     }
   },
 
@@ -45,6 +51,9 @@ const store = new Vuex.Store({
     },
     updateUserID({commit}, userID){
       commit('setUserID', userID)
+    },
+    updateUserName({commit}, userName){
+      commit('setUserName', userName)
     }
   },
 
