@@ -65,7 +65,8 @@ export default {
           //firestoreにタイトルと詳細をpushする
           db.collection('Questions').add({
             title : this.title,
-            description : this.description
+            description : this.description,
+            time: new Date()
           })
           .then(function() {
               console.log("Document successfully written!");
