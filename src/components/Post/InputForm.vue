@@ -16,7 +16,7 @@
       <div v-for="(option,index) in optionList" :key="index" class="option">
         <b-input-group>
           <b-form-input v-model="option.text" placeholder="選択肢" class=”form-inline”></b-form-input>
-          <b-button variant="light">
+          <b-button variant="light" @click="deleteForm(index)">
             <img src="../../assets/delete-icon-24px.svg" alt="delete-icon">
           </b-button>
         </b-input-group>
@@ -52,7 +52,10 @@ export default {
         text: "",
       }
       this.optionList.push(option);
-      console.log(this.optionList);
+    },
+    deleteForm(index){
+      // indexの要素を削除
+      this.optionList.splice(index,1)
     },
     cancel() {
       console.log("キャンセルしました")
