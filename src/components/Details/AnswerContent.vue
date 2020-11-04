@@ -1,6 +1,7 @@
 <template>
-  <b-button v-on:click="selected" block>
-    {{ answer.text }} :  {{ answer.votes }}票
+  <b-button v-on:click="selected" block class="answer-container">
+    <div class="answer-text">{{ answer.text }} :</div>
+    <div class="answer-votes">{{ answer.votes }} 票</div>
     <img src="../../assets/checkbox-icon-24px.svg" alt="check box icon" v-if="answer.isVoted">
   </b-button>
 </template>
@@ -17,18 +18,20 @@ export default{
 }
 </script>
 
-<style>
-.answer-content{
-  text-align: center;
-  width: 500px;
-  height: 70px;
-  border: 2px solid;
-  border-color: gray;
-  border-radius: 2em;
-  margin: 2px auto;
-  padding-top: 15px;
+<style scoped>
+.answer-container{
+  text-align: left;
+  display: flex;
 }
-.answer-content :hover{
-  cursor: pointer;
+
+.answer-text{
+  margin-right: auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.answer-votes{
+  text-align: right;
 }
 </style>

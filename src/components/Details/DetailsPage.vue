@@ -23,8 +23,10 @@
         <b-form-input placeholder="選択肢" v-model="candidate" class="add-option-form"></b-form-input>
         <b-button v-on:click="addAnswer" variant="outline-dark">追加する</b-button>
       </b-input-group>
+      <div class="container vote-btn-container">
+        <b-button v-on:click="vote" variant="primary">投票する</b-button>
+      </div>
     </b-container>
-    <b-button v-on:click="vote">投票する</b-button>
   </div>
 </template>
 
@@ -240,6 +242,10 @@ export default {
 
 .add-option-container{
   display: flex;
+}
+
+.vote-btn-container{
+  text-align: right;
 }
 
 </style>
