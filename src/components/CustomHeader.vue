@@ -80,9 +80,14 @@ export default {
       if (user) {
         console.log("ログイン済み "+ user.displayName)
         this.isUserExist = true
-        this.userName = user.displayName
+        if(user.displayName == ""){
+          this.userName = "Guest"
+        } else {
+          this.userName = user.displayName
+        }
         //storeに値をuserIDを保存
         this.$store.dispatch('updateUserID', user.uid)
+        this.$store.dispatch('updateUserName', this.userName)
       } else {
         console.log("未ログイン")
         this.isUserExist = false
@@ -92,7 +97,18 @@ export default {
     },
     initializeUserdb: function(user){
       console.log("DBの初期化  "+ user.uid)
-      db.collection("Users").doc(user.uid).set({
+      if(user.displayName == ""){
+        db.collection("Users").doc(user.uid).set({
+          name: "Guest"
+        })
+        .then(function() {
+            console.log("Document successfully written!");
+        })
+        .catch(function(error) {
+            console.error("Error writing document: ", error);
+        });
+      } else {
+        db.collection("Users").doc(user.uid).set({
           name: user.displayName
         })
         .then(function() {
@@ -101,6 +117,7 @@ export default {
         .catch(function(error) {
             console.error("Error writing document: ", error);
         });
+      }
     },
     toPostPage: function(){
       if(this.isUserExist){
