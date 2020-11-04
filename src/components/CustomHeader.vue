@@ -19,7 +19,7 @@
           <img src="../assets/login-icon-24px.svg" alt="login-icon"> login
         </b-button>
         <!-- ユーザー名 -->
-        <div v-if="isUserExist">
+        <div v-if="isUserExist" v-on:click="toProfilePage" id="user-text-container">
           <div id="user-name-text"> {{ userName }} </div>
         </div> 
         <!-- ログアウトボタン -->
@@ -116,7 +116,16 @@ export default {
       } else{
         this.$router.push({name: 'HomePage'});
       }
-    }
+    },
+    toProfilePage: function(){
+      console.log("profile")
+      if(this.$route.path == "/profile"){
+        // ページリロード
+        // this.$router.go({ name: 'ProfilePage' })
+      } else{
+        this.$router.push({name: 'ProfilePage'});
+      }
+    },
   },
 }
 </script>
@@ -180,6 +189,10 @@ export default {
   margin-left: 10px;
 }
 
+#user-text-container{
+  cursor: pointer;
+}
+
 #user-name-text{
   /* テキストの高さ揃え */
   padding-top: 9px;
@@ -189,6 +202,6 @@ export default {
   font-size: 1.2rem;
   overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis;;
+  text-overflow: ellipsis;
 }
 </style>
