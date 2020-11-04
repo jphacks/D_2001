@@ -11,9 +11,12 @@ jobs:
           name: 'Node.js version check'          
           command: node --version
       - checkout
+#       - run:
+#           name: 'Install Firebase CLI'
+#           command: npm install --save-dev firebase-tools
       - run:
-          name: 'Install Firebase CLI'
-          command: npm install --save-dev firebase-tools
+          name: 'Install npm packages'
+          command: npm install
       - run:
           name: 'Run build'
           command: npm run build
