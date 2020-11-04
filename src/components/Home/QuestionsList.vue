@@ -21,7 +21,7 @@ export default {
   },
   mounted: function(){
     //マウント時に投稿一覧を取得する
-    var ref = db.collection('Questions').orderBy('title')
+    var ref = db.collection('Questions').orderBy('time', 'desc')
       ref.get()
         .then(snapshot => {
           if (snapshot.empty) {
