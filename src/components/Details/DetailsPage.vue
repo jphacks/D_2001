@@ -100,13 +100,16 @@ export default {
     addAnswer: function(){
       //回答を追加する
       db.collection('Questions').doc(this.questionID).collection('Answers').add({
-        text: this.candidate
+        text: this.candidate,
+        votesNum: 0
       })
-      .then(() => {
+      .then((doc) => {
         console.log("Answer successfully written!");
         var answerData = {
+          id: doc.id,
           text: this.candidate,
-          votesNum: 0
+          votes: 0,
+          isVoted: false
         }
         this.answers.push(answerData)
         this.candidate = ""
