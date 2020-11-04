@@ -35,7 +35,7 @@ export default{
 }
 </script>
 
-<style>
+<style scoped>
 .post-content{
   height: 100px;
   border-bottom: 2px solid;

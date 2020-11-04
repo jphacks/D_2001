@@ -1,7 +1,14 @@
 <template>
   <div>
     <CustomHeader/>
-    <b-container id="contents-container">
+    <b-container class="contents-container">
+      <div class="leading-container">
+        <h2>ネーミングにみんなで答えを！</h2>
+        <div>
+          name_itにようこそ！<br>
+          このサイトは命名の悩みを投稿してみんなにアンケートをとれるエンジニア支援サイトになります。エンジニアの知見を活かして悩ましい命名に正解を見つけていきましょう！
+        </div>
+      </div>
       <QuestionsList/>
     </b-container>
   </div>
@@ -20,9 +27,14 @@ export default {
 }
 </script>
 
-<style>
-#contents-container {
+<style scoped>
+.leading-container{
+  padding: 30px;
+  margin-bottom: 30px;
   background-color: #FFFFFF;
-  padding: 0;
+}
+
+.contents-container {
+  margin-top: 30px;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="questions-list">
     <div v-for="(question, index) in questions" v-bind:key="index">
       <PostContent v-bind:docID="question.docID" />
     </div>
@@ -42,3 +42,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.questions-list{
+  background-color: #FFFFFF;
+}
+</style>
