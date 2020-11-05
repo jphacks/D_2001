@@ -90,6 +90,10 @@ export default {
   methods:{
     addAnswer: function(){
       //回答を追加する
+      if(this.candidate == ""){
+        alert("追加する選択肢には文字を入れてください")
+        return
+      }
       db.collection('Questions').doc(this.docID).collection('Answers').add({
         text: this.candidate,
         votesNum: 0
