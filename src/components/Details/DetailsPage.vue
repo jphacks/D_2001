@@ -119,10 +119,10 @@ export default {
         await this.updateAnswerID(userRef, answerID)
       }
     },
-    controlVote: function(userRef, dbRef, answerID){
+    controlVote: async function(userRef, dbRef, answerID){
       return new Promise(resolve => {
         // 同じ回答に投票していないか確認する
-        userRef.get().then(snapshot => {
+        userRef.get().then(async (snapshot) => {
           if(snapshot.exists){
             var preAnswerId = snapshot.data().answerId
             if(preAnswerId != null){
@@ -166,27 +166,36 @@ export default {
                   resolve(answerID)
                 })
               }
+            } else {
+              await this.firstVote(dbRef, answerID)
+              resolve()
             }
           } else {
-            // 初めての投票
-            // 投票する回答に投票数を1増やす
-            dbRef.doc(answerID).get().then(snapshot => {
-              if(snapshot.exists){
-                var num = snapshot.data().votesNum
-                var ansText = snapshot.data().text
-                // 表示する票数を増やす
-                for(var i in this.answers){
-                  if(ansText == this.answers[i].text){
-                    this.answers[i].votes++
-                    this.answers[i].isVoted = !this.answers[i].isVoted
-                  }
-                }
-                dbRef.doc(answerID).update({
-                  votesNum: num+1
-                })
-              resolve(answerID)
+            await this.firstVote(dbRef, answerID)
+            resolve()
+          }
+        })
+      })
+    },
+    firstVote: async function(dbRef,answerID){
+      return new Promise(resolve => {
+        // 初めての投票
+        // 投票する回答に投票数を1増やす
+        dbRef.doc(answerID).get().then(snapshot => {
+          if(snapshot.exists){
+            var num = snapshot.data().votesNum
+            var ansText = snapshot.data().text
+            // 表示する票数を増やす
+            for(var i in this.answers){
+              if(ansText == this.answers[i].text){
+                this.answers[i].votes++
+                this.answers[i].isVoted = !this.answers[i].isVoted
               }
+            }
+            dbRef.doc(answerID).update({
+              votesNum: num+1
             })
+            resolve()
           }
         })
       })
@@ -195,7 +204,7 @@ export default {
       // Usersテーブルに投票した回答を保存する
       userRef.set({
         answerId: answerID
-      })
+      }, { merge: true })
       .then(function() {
           console.log("Document successfully written!");
       })

@@ -29,11 +29,14 @@ export default {
       var userRef = db.collection("Users").doc(this.userID).collection("Questions").doc(this.docID)
       if(this.stared){
         // お気に入り追加
-        userRef.add({
+        userRef.set({
           stared: true
-        })
+        }, { merge: true })
       } else {
         // お気に入り削除
+        userRef.set({
+          stared: false
+        }, { merge: true })
       }
     }
   },

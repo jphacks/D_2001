@@ -90,7 +90,6 @@ export default {
                     text : value.text,
                     votesNum: 0
                   })
-                  console.log(value);
                 })
               });
           })
