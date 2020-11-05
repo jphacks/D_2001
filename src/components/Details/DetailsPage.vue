@@ -123,30 +123,8 @@ export default {
       return new Promise(resolve => {
         // 同じ回答に投票していないか確認する
         userRef.get().then(snapshot => {
-          try{
-            var preAnswerId = snapshot.data().answerId
-          } catch{
-            // 初めての投票
-            // 投票する回答に投票数を1増やす
-            dbRef.doc(answerID).get().then(snapshot => {
-              if(snapshot.exists){
-                var num = snapshot.data().votesNum
-                var ansText = snapshot.data().text
-                // 表示する票数を増やす
-                for(var i in this.answers){
-                  if(ansText == this.answers[i].text){
-                    this.answers[i].votes++
-                    this.answers[i].isVoted = !this.answers[i].isVoted
-                  }
-                }
-                dbRef.doc(answerID).update({
-                  votesNum: num+1
-                })
-              resolve(answerID)
-              }
-            })
-          }
           if(snapshot.exists){
+            var preAnswerId = snapshot.data().answerId
             if(preAnswerId != null){
               if(preAnswerId == answerID){
                 // 前回を同じ回答に投票している
@@ -189,6 +167,26 @@ export default {
                 })
               }
             }
+          } else {
+            // 初めての投票
+            // 投票する回答に投票数を1増やす
+            dbRef.doc(answerID).get().then(snapshot => {
+              if(snapshot.exists){
+                var num = snapshot.data().votesNum
+                var ansText = snapshot.data().text
+                // 表示する票数を増やす
+                for(var i in this.answers){
+                  if(ansText == this.answers[i].text){
+                    this.answers[i].votes++
+                    this.answers[i].isVoted = !this.answers[i].isVoted
+                  }
+                }
+                dbRef.doc(answerID).update({
+                  votesNum: num+1
+                })
+              resolve(answerID)
+              }
+            })
           }
         })
       })
@@ -207,6 +205,9 @@ export default {
     },
     isVotedBySelf: function(answerID){
       return new Promise(resolve => {
+        if(this.getUserID == null){
+          resolve(false)
+        }
         db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.docID)
         .get().then(snapshot => {
           if(snapshot.exists){
