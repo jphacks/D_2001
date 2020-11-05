@@ -1,7 +1,11 @@
 <template>
   <div>
-    <b-button v-if="!stared" v-on:click="pushStar" variant="dark">お気に入り</b-button>
-    <b-button v-if="stared" v-on:click="pushStar" variant="primary">お気に入り解除</b-button>
+    <b-button v-if="!stared" v-on:click="pushStar">
+      <img src="../../assets/invisible-star-24px.svg" alt="name_it icon" class="name-it-icon" v-if="!stared" v-on:click="pushStar">
+    </b-button>
+    <b-button v-if="stared" v-on:click="pushStar">
+      <img src="../../assets/star-24px.svg" alt="name_it icon" class="name-it-icon" v-if="stared" v-on:click="pushStar">
+    </b-button>
   </div>
 </template>
 
