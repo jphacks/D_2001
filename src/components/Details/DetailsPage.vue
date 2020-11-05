@@ -29,7 +29,9 @@
         <b-button v-on:click="vote" variant="primary">投票する</b-button>
       </div>
       <!-- コメント -->
-      <CommentContent v-bind:userID="getUserID"></CommentContent>
+      <div class="section-container">
+        <CommentContent v-bind:userID="getUserID"></CommentContent>
+      </div>
     </b-container>
   </div>
 </template>
@@ -259,6 +261,11 @@ export default {
 
 .options-container{
   margin-bottom: 5px;
+}
+
+/* header貫通してしまうのでこれで暫定 */
+.input-group{
+  flex-wrap: nowrap;
 }
 
 .add-option-container{
