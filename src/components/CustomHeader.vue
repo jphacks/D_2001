@@ -136,7 +136,6 @@ export default {
       }
     },
     toProfilePage: function(){
-      console.log("profile")
       if(this.$route.path == "/profile"){
         // ページリロード
         // this.$router.go({ name: 'ProfilePage' })

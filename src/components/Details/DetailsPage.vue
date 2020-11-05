@@ -61,7 +61,6 @@ export default {
   mounted: async function(){
     // URLからドキュメントIDを取得
     this.docID = this.$route.params.id
-    console.log("parend docID " + this.docID)
     var ref = db.collection("Questions").doc(this.docID)
     // 投稿のタイトルと詳細を取得
     ref.get().then(doc => {
