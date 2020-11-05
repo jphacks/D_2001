@@ -65,42 +65,52 @@ export default {
     },
     post() {
       var optionList = this.optionList
+      var hasEmpty = false
+      optionList.forEach( option =>{
+        if(option.text == ""){
+          hasEmpty = true
+        }
+      })
       if(this.title != "" && this.description != ""){
         if(this.optionList.length >= 1){
-          //firestoreにタイトルと詳細をpushする
-          db.collection('Questions').add({
-            title : this.title,
-            description : this.description,
-            time: new Date(),
-            userID: this.getUserID,
-          })
-          .then(function() {
-              console.log("Document successfully written!");
-          })
-          .catch(function(error) {
-              console.error("Error writing document: ", error);
-          });
-          db.collection("Questions").where("title", "==", this.title).where("description", "==", this.description)
-          .get()
-          .then(function(querySnapshot) {
-              querySnapshot.forEach(function(doc) {
-                console.log(doc.id);
-                optionList.forEach(function( value ) {
-                  db.collection("Questions").doc(doc.id).collection("Answers").add({
-                    text : value.text,
-                    votesNum: 0
+          if(!hasEmpty){
+            //firestoreにタイトルと詳細をpushする
+            db.collection('Questions').add({
+              title : this.title,
+              description : this.description,
+              time: new Date(),
+              userID: this.getUserID,
+            })
+            .then(function() {
+                console.log("Document successfully written!");
+            })
+            .catch(function(error) {
+                console.error("Error writing document: ", error);
+            });
+            db.collection("Questions").where("title", "==", this.title).where("description", "==", this.description)
+            .get()
+            .then(function(querySnapshot) {
+                querySnapshot.forEach(function(doc) {
+                  console.log(doc.id);
+                  optionList.forEach(function( value ) {
+                    db.collection("Questions").doc(doc.id).collection("Answers").add({
+                      text : value.text,
+                      votesNum: 0
+                    })
                   })
-                })
-              });
-          })
-          .then(function() {
-              console.log("Answer successfully written!");
-          })
-          .catch(function(error) {
-              console.log("Error getting documents: ", error);
-          });
-          // HomePageに遷移する
-          this.$router.push({name: 'HomePage', params: {docID: this.docID}});
+                });
+            })
+            .then(function() {
+                console.log("Answer successfully written!");
+            })
+            .catch(function(error) {
+                console.log("Error getting documents: ", error);
+            });
+            // HomePageに遷移する
+            this.$router.push({name: 'HomePage', params: {docID: this.docID}});
+          } else {
+            alert("空欄の選択肢があります")
+          }
         } else{
           alert("選択肢を追加してください．")
         }
