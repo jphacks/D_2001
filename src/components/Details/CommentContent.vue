@@ -1,16 +1,20 @@
 <template>
   <div>
     <div class="container">
+      <h2>コメント</h2>
       <div v-for="(comment, index) in comments" v-bind:key="index">
-        <div v-text="comment.text"></div>
-        <div v-text="comment.time"></div>
-        <div v-text="comment.userName"></div>
+        <div class="comment-container">
+          <div class="comment-title">
+            <div v-text="comment.userName" class="user-name-text"></div>
+            <div v-text="comment.time" class="time-text"></div>
+          </div>
+          <div v-text="comment.text" class="comment-text"></div>
+        </div>
       </div>
     </div>
-    <div class="container">
-      <h2>コメント</h2>
+    <div class="container comment-entry-container">
       <b-form-textarea placeholder="コメントを記入してください" v-model="commentText" rows="5" no-resize></b-form-textarea>
-      <b-button v-on:click="pushComment" variant="primary">コメントする</b-button>
+      <b-button v-on:click="pushComment" variant="primary" id="comment-entry-btn">コメントする</b-button>
     </div>
   </div>
 </template>
@@ -47,8 +51,8 @@ export default {
         //コメント情報を配列で所持する
         var commentData = {
           text: doc.data().comment,
-          userName: doc.data().userName,
-          time: this.formatDate(new Date(doc.data().time * 1000)),
+          userName: doc.data().userName + "さん",
+          time: this.formatDate(new Date(doc.data().time.seconds * 1000)),
         }
         this.comments.push(commentData)
       });
@@ -56,7 +60,6 @@ export default {
   },
   methods: {
     pushComment: function(){
-      console.log(this.commentText)
       if(this.userID == null){
         alert("コメントするにはログインしてください")
       } else if(this.commentText == ""){
@@ -72,10 +75,11 @@ export default {
             console.log("Document successfully written!")
              var commentData = {
               text: this.commentText,
-              userName: this.getUserName,
-              time: new Date(),
+              userName: this.getUserName + "さん",
+              time: this.formatDate(new Date()),
             }
             this.comments.push(commentData)
+            this.commentText = ""
         })
         .catch(function(error) {
             console.error("Error writing document: ", error)
@@ -83,7 +87,7 @@ export default {
       }
     },
     formatDate: function(dt) {
-      var y = dt.getYear()-69
+      var y = dt.getFullYear()
       var m = ('00' + (dt.getMonth()+1)).slice(-2)
       var d = ('00' + dt.getDate()).slice(-2)
       var h = ('00' + dt.getHours()).slice(-2)
@@ -93,3 +97,36 @@ export default {
   },
 }
 </script>
+
+<style>
+.comment-container{
+  height: auto;
+  border-bottom: 2px solid;
+  border-color: #dddddd;
+  padding: 7px 30px;
+}
+
+.comment-container:last-child{
+  margin-bottom: 10px;
+}
+
+.comment-text{
+  font-size: 1.3rem;
+  -webkit-line-clamp: 1;
+}
+
+.user-name-text{
+  -webkit-line-clamp: 1;
+}
+
+.time-text{
+  /* vertical-align: bottom; */
+  text-align: right;
+  font-size: 0.8rem;
+  color: gray;
+}
+
+.comment-entry-container{
+  margin-top: 50px;
+}
+</style>
