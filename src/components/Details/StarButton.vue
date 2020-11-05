@@ -1,7 +1,7 @@
 <template>
   <div>
-    <b-button v-on:click="pushStar" variant="primary">お気に入り</b-button>
-    {{stared}}
+    <b-button v-if="!stared" v-on:click="pushStar" variant="dark">お気に入り</b-button>
+    <b-button v-if="stared" v-on:click="pushStar" variant="primary">お気に入り解除</b-button>
   </div>
 </template>
 
@@ -12,12 +12,27 @@ export default {
   data: function(){
     return{
       stared: false,
+      docID: "",
     }
   },
   props:[
-    "docID",
     "userID"
   ],
+  mounted: function(){
+    // URLからドキュメントIDを取得
+    this.docID = this.$route.params.id
+    // データベースからスター状態を取得
+    var userRef = db.collection("Users").doc(this.userID).collection("Questions").doc(this.docID)
+    userRef.get().then(snapshot => {
+      if(snapshot.exists){
+        if(snapshot.data().stared != null){
+          this.stared = snapshot.data().stared
+        }
+      }else{
+        //投票もお気に入りもしていない
+      }
+    })
+  },
   methods:{
     pushStar: function(){
       // ログインしているか確認

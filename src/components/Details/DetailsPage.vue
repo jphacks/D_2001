@@ -10,7 +10,7 @@
       <!-- 詳細欄 -->
       <div class="container">
         <div v-if="description != undefined">{{description}}</div>
-        <StarButton v-bind:docID="docID" v-bind:userID="getUserID"></StarButton>
+        <StarButton v-bind:userID="getUserID"></StarButton>
       </div>
       <hr>
       <!-- 選択肢欄 -->
@@ -59,7 +59,9 @@ export default {
     }
   },
   mounted: async function(){
+    // URLからドキュメントIDを取得
     this.docID = this.$route.params.id
+    console.log("parend docID " + this.docID)
     var ref = db.collection("Questions").doc(this.docID)
     // 投稿のタイトルと詳細を取得
     ref.get().then(doc => {
