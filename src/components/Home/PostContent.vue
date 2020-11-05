@@ -31,7 +31,7 @@ export default{
   },
   methods: {
     toDetails(){
-      this.$router.push({name: 'DetailsPage', params: {docID: this.docID}});
+      this.$router.push({name: 'DetailsPage', params: {id: this.docID}});
     },
     getDiffTime: function(postTime){
       //現在の時間
