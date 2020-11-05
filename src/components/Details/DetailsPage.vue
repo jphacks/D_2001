@@ -27,6 +27,8 @@
       <div class="container vote-btn-container">
         <b-button v-on:click="vote" variant="primary">投票する</b-button>
       </div>
+      <!-- コメント -->
+      <CommentContent v-bind:userID="getUserID"></CommentContent>
     </b-container>
   </div>
 </template>
@@ -36,6 +38,7 @@ import {db} from '../../plugins/firebase'
 import CustomHeader from '../CustomHeader'
 import AnswerContent from './AnswerContent'
 import StarButton from './StarButton'
+import CommentContent from './CommentContent'
 export default {
   name: 'DetailsPage',
   data: function() {
@@ -52,6 +55,7 @@ export default {
     CustomHeader,
     AnswerContent,
     StarButton,
+    CommentContent,
   },
   computed:{
     getUserID(){
