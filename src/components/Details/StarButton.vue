@@ -53,6 +53,13 @@ export default {
           stared: false
         }, { merge: true })
       }
+    },
+    autoStar: function(){
+      var userRef = db.collection("Users").doc(this.userID).collection("Questions").doc(this.docID)
+      userRef.set({
+        stared: true
+      }, { merge: true })
+      this.stared = true
     }
   },
 }

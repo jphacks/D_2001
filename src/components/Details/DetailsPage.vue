@@ -10,7 +10,7 @@
       <!-- 詳細欄 -->
       <div class="container">
         <div v-if="description != undefined">{{description}}</div>
-        <StarButton v-bind:userID="getUserID"></StarButton>
+        <StarButton ref="star" v-bind:userID="getUserID"></StarButton>
       </div>
       <hr>
       <!-- 選択肢欄 -->
@@ -113,6 +113,7 @@ export default {
         //ログインしていない
         alert("投票するにはログインしてください")
       } else {
+        this.$refs.star.autoStar()
         var answerID = this.answers[this.selectedIndex].id
         var userRef = db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.docID)
         var dbRef = db.collection('Questions').doc(this.docID).collection('Answers')
