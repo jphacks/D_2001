@@ -81,7 +81,7 @@ export default {
       if (user) {
         console.log("ログイン済み "+ user.displayName)
         this.isUserExist = true
-        if(user.displayName == ""){
+        if(user.displayName == null){
           this.userName = "Guest"
         } else {
           this.userName = user.displayName
@@ -98,7 +98,7 @@ export default {
     },
     initializeUserdb: function(user){
       console.log("DBの初期化  "+ user.uid)
-      if(user.displayName == ""){
+      if(user.displayName == null){
         db.collection("Users").doc(user.uid).set({
           name: "Guest"
         })
