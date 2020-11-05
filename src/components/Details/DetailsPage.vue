@@ -10,6 +10,7 @@
       <!-- 詳細欄 -->
       <div class="container">
         <div v-if="description != undefined">{{description}}</div>
+        <StarButton ref="star" v-bind:userID="getUserID"></StarButton>
       </div>
       <hr>
       <!-- 選択肢欄 -->
@@ -34,6 +35,7 @@
 import {db} from '../../plugins/firebase'
 import CustomHeader from '../CustomHeader'
 import AnswerContent from './AnswerContent'
+import StarButton from './StarButton'
 export default {
   name: 'DetailsPage',
   data: function() {
@@ -43,35 +45,23 @@ export default {
       description: "",
       candidate: "",
       selectedIndex: "",
-      questionID: "",
       docID: "",
     }
   },
   components: {
     CustomHeader,
-    AnswerContent
+    AnswerContent,
+    StarButton,
   },
   computed:{
-    getStoreID(){
-      return this.$store.getters.docID
-    },
     getUserID(){
       return this.$store.getters.userID
     }
   },
   mounted: async function(){
+    // URLからドキュメントIDを取得
     this.docID = this.$route.params.id
-    if(this.docID == null){
-      //ページリロード
-      //storeから値を取得
-      this.questionID = this.getStoreID
-    } else{
-      //ページ遷移でのアクセス
-      this.questionID = this.docID
-      //storeに値を保存
-      this.$store.dispatch('doUpdate', this.questionID)
-    }
-    var ref = db.collection("Questions").doc(this.questionID)
+    var ref = db.collection("Questions").doc(this.docID)
     // 投稿のタイトルと詳細を取得
     ref.get().then(doc => {
       if(doc.exists){
@@ -96,7 +86,7 @@ export default {
   methods:{
     addAnswer: function(){
       //回答を追加する
-      db.collection('Questions').doc(this.questionID).collection('Answers').add({
+      db.collection('Questions').doc(this.docID).collection('Answers').add({
         text: this.candidate,
         votesNum: 0
       })
@@ -123,17 +113,18 @@ export default {
         //ログインしていない
         alert("投票するにはログインしてください")
       } else {
+        this.$refs.star.autoStar()
         var answerID = this.answers[this.selectedIndex].id
-        var userRef = db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.questionID)
-        var dbRef = db.collection('Questions').doc(this.questionID).collection('Answers')
+        var userRef = db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.docID)
+        var dbRef = db.collection('Questions').doc(this.docID).collection('Answers')
         await this.controlVote(userRef, dbRef, answerID)
         await this.updateAnswerID(userRef, answerID)
       }
     },
-    controlVote: function(userRef, dbRef, answerID){
+    controlVote: async function(userRef, dbRef, answerID){
       return new Promise(resolve => {
         // 同じ回答に投票していないか確認する
-        userRef.get().then(snapshot => {
+        userRef.get().then(async (snapshot) => {
           if(snapshot.exists){
             var preAnswerId = snapshot.data().answerId
             if(preAnswerId != null){
@@ -177,27 +168,36 @@ export default {
                   resolve(answerID)
                 })
               }
+            } else {
+              await this.firstVote(dbRef, answerID)
+              resolve()
             }
           } else {
-            // 初めての投票
-            // 投票する回答に投票数を1増やす
-            dbRef.doc(answerID).get().then(snapshot => {
-              if(snapshot.exists){
-                var num = snapshot.data().votesNum
-                var ansText = snapshot.data().text
-                // 表示する票数を増やす
-                for(var i in this.answers){
-                  if(ansText == this.answers[i].text){
-                    this.answers[i].votes++
-                    this.answers[i].isVoted = !this.answers[i].isVoted
-                  }
-                }
-                dbRef.doc(answerID).update({
-                  votesNum: num+1
-                })
-              resolve(answerID)
+            await this.firstVote(dbRef, answerID)
+            resolve()
+          }
+        })
+      })
+    },
+    firstVote: async function(dbRef,answerID){
+      return new Promise(resolve => {
+        // 初めての投票
+        // 投票する回答に投票数を1増やす
+        dbRef.doc(answerID).get().then(snapshot => {
+          if(snapshot.exists){
+            var num = snapshot.data().votesNum
+            var ansText = snapshot.data().text
+            // 表示する票数を増やす
+            for(var i in this.answers){
+              if(ansText == this.answers[i].text){
+                this.answers[i].votes++
+                this.answers[i].isVoted = !this.answers[i].isVoted
               }
+            }
+            dbRef.doc(answerID).update({
+              votesNum: num+1
             })
+            resolve()
           }
         })
       })
@@ -206,7 +206,7 @@ export default {
       // Usersテーブルに投票した回答を保存する
       userRef.set({
         answerId: answerID
-      })
+      }, { merge: true })
       .then(function() {
           console.log("Document successfully written!");
       })
@@ -219,7 +219,7 @@ export default {
         if(this.getUserID == null){
           resolve(false)
         }
-        db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.questionID)
+        db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.docID)
         .get().then(snapshot => {
           if(snapshot.exists){
             if(snapshot.data().answerId == answerID){
