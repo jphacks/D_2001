@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <b-button v-if="!stared" v-on:click="pushStar">
-      <img src="../../assets/invisible-star-24px.svg" alt="name_it icon" class="name-it-icon" v-if="!stared" v-on:click="pushStar">
+  <div class="star-button-container">
+    <b-button v-if="!stared" v-on:click="pushStar" variant="outline-success" squared>
+      お気に入り
     </b-button>
-    <b-button v-if="stared" v-on:click="pushStar">
-      <img src="../../assets/star-24px.svg" alt="name_it icon" class="name-it-icon" v-if="stared" v-on:click="pushStar">
+    <b-button v-if="stared" v-on:click="pushStar" variant="success" squared>
+      お気に入り削除
     </b-button>
   </div>
 </template>
@@ -68,3 +68,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.star-button-container{
+  text-align: right;
+}
+</style>

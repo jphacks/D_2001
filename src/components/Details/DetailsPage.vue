@@ -3,14 +3,15 @@
     <CustomHeader/>
     <b-container id="contents-container">
       <!-- タイトル欄 -->
-      <div class="section-container">
+      <div class="title-container">
         <div v-if="title != undefined" class="h1">{{title}}</div>
+        <!-- お気に入りボタン欄 -->
+        <StarButton ref="star" v-bind:userID="getUserID"></StarButton>
       </div>
       <hr>
       <!-- 詳細欄 -->
       <div class="section-container">
         <div v-if="description != undefined">{{description}}</div>
-        <StarButton ref="star" v-bind:userID="getUserID"></StarButton>
       </div>
       <hr>
       <!-- 選択肢欄 -->
