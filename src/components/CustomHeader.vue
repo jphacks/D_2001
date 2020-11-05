@@ -60,6 +60,7 @@ export default {
         this.isUserExist = true
         this.userName = user.displayName
         this.initializeUserdb(user)
+        this.$router.go({name: "HomePage"});
       }).catch(function() {
         // ログイン失敗
       });
