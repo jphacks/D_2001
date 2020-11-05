@@ -3,28 +3,28 @@
     <CustomHeader/>
     <b-container id="contents-container">
       <!-- タイトル欄 -->
-      <div class="container">
+      <div class="section-container">
         <div v-if="title != undefined" class="h1">{{title}}</div>
       </div>
       <hr>
       <!-- 詳細欄 -->
-      <div class="container">
+      <div class="section-container">
         <div v-if="description != undefined">{{description}}</div>
         <StarButton ref="star" v-bind:userID="getUserID"></StarButton>
       </div>
       <hr>
       <!-- 選択肢欄 -->
-      <div class="container">
+      <div class="section-container">
         <div v-for="(answer, index) in answers" v-bind:key="index" class="options-container">
           <AnswerContent @sendIndex="setIndex" v-bind:answer="{text: answer.text, index: index, votes: answer.votes, isVoted: answer.isVoted}"/>
         </div>
       </div>
       <!-- 選択肢追加入力欄 -->
-      <b-input-group class="container">
+      <b-input-group class="section-container">
         <b-form-input placeholder="選択肢" v-model="candidate" class="add-option-form"></b-form-input>
         <b-button v-on:click="addAnswer" variant="outline-dark">追加する</b-button>
       </b-input-group>
-      <div class="container vote-btn-container">
+      <div class="section-container vote-btn-container">
         <b-button v-on:click="vote" variant="primary">投票する</b-button>
       </div>
       <!-- コメント -->
@@ -252,7 +252,7 @@ export default {
   background-color: #FFFFFF;
 }
 
-.container {
+.section-container {
   margin-bottom: 20px;
 }
 
