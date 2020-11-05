@@ -218,6 +218,9 @@ export default {
     },
     isVotedBySelf: function(answerID){
       return new Promise(resolve => {
+        if(this.getUserID == null){
+          resolve(false)
+        }
         db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.questionID)
         .get().then(snapshot => {
           if(snapshot.exists){
