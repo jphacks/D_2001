@@ -1,19 +1,18 @@
 <template>
   <div>
-    <div class="container">
-      <h2>コメント</h2>
-      <div v-for="(comment, index) in comments" v-bind:key="index">
-        <div class="comment-container">
-          <div class="comment-title">
-            <div v-text="comment.userName" class="user-name-text"></div>
-            <div v-text="comment.time" class="time-text"></div>
-          </div>
-          <div v-text="comment.text" class="comment-text"></div>
+    <h3>コメント</h3>
+    <div v-for="(comment, index) in comments" v-bind:key="index">
+      <div class="comment-container">
+        <div class="comment-title-container">
+          <div v-text="comment.userName" class="user-name-text"></div>
+          <div v-text="comment.time" class="time-text"></div>
         </div>
+        <div v-text="comment.text" class="comment-text"></div>
+        <hr>
       </div>
     </div>
-    <div class="container comment-entry-container">
-      <b-form-textarea placeholder="コメントを記入してください" v-model="commentText" rows="5" no-resize></b-form-textarea>
+    <b-form-textarea placeholder="コメントを記入してください" v-model="commentText" rows="5" no-resize></b-form-textarea>
+    <div class="comment-entry-btn-container">
       <b-button v-on:click="pushComment" variant="primary" id="comment-entry-btn">コメントする</b-button>
     </div>
   </div>
@@ -100,33 +99,33 @@ export default {
 
 <style>
 .comment-container{
-  height: auto;
-  border-bottom: 2px solid;
-  border-color: #dddddd;
   padding: 7px 30px;
 }
 
-.comment-container:last-child{
+.comment-title-container{
+  display: flex;
   margin-bottom: 10px;
 }
 
-.comment-text{
-  font-size: 1.3rem;
-  -webkit-line-clamp: 1;
+.comment-title-container > *{
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  color: gray;
 }
 
 .user-name-text{
+  margin-right: auto;
   -webkit-line-clamp: 1;
 }
 
 .time-text{
-  /* vertical-align: bottom; */
+  -webkit-line-clamp: 1;
   text-align: right;
   font-size: 0.8rem;
-  color: gray;
 }
 
-.comment-entry-container{
-  margin-top: 50px;
+.comment-entry-btn-container{
+  text-align: right;
 }
 </style>

@@ -1,20 +1,25 @@
 <template>
   <div>
     <CustomHeader/>
-    <b-container id="contents-container">
-      <div v-text="userName" class="h1"></div>
-      <b-tabs content-class="mt-3" justified>
-        <b-tab title="投稿" active>
-          <div v-for="(question, index) in questions" v-bind:key="index">
-            <PostContent v-bind:docID="question.docID" />
-          </div>
-        </b-tab>
-        <b-tab title="お気に入り">
-          <div v-for="(question, index) in staredQuestions" v-bind:key="index">
-            <PostContent v-bind:docID="question.docID" />
-          </div>
-        </b-tab>
-      </b-tabs>
+    <b-container class="contents-container">
+      <div class="section-container profile-container">
+        <div>UserName :</div>
+        <div v-text="userName" class="username-text"></div>
+      </div>
+      <div class="section-container">
+        <b-tabs justified class="profile-post-list-container">
+          <b-tab title="投稿" active>
+            <div v-for="(question, index) in questions" v-bind:key="index">
+              <PostContent v-bind:docID="question.docID" />
+            </div>
+          </b-tab>
+          <b-tab title="お気に入り">
+            <div v-for="(question, index) in staredQuestions" v-bind:key="index">
+              <PostContent v-bind:docID="question.docID" />
+            </div>
+          </b-tab>
+        </b-tabs>
+      </div>
     </b-container>
   </div>
 </template>
@@ -82,3 +87,30 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.contents-container{
+  margin-top: 30px;
+}
+
+.section-container{
+  margin-bottom: 30px;
+  background-color: #ffffff;
+}
+
+.profile-container{
+  display: flex;
+  justify-content: flex-start;
+  padding: 30px;
+}
+
+.profile-container > *{
+  font-size: x-large;
+}
+
+.username-text{
+  margin-left: auto;
+  text-align: right;
+  font-weight: bold;
+}
+</style>
