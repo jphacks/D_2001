@@ -63,6 +63,10 @@ export default {
           displayName: this.userName
         })
         this.initializeUserdb(user, createAt)
+        var now = new Date()
+        var milliDiffTime = now.getTime() - new Date(createAt).getTime()
+        var diffYear = Math.floor(milliDiffTime / 1000 / 60 / 60 / 24 / 365)
+        this.$store.dispatch('updatePeriodOfGitHub', diffYear)
       }).catch(function() {
         // ログイン失敗
       });

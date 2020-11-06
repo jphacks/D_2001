@@ -65,6 +65,9 @@ export default {
   computed:{
     getUserID(){
       return this.$store.getters.userID
+    },
+    getPeriodOfGitHub(){
+      return this.$store.getters.periodOfGitHub
     }
   },
   mounted: async function(){
@@ -164,7 +167,7 @@ export default {
                     // 表示する票数を増やす
                     for(var i in this.answers){
                       if(ansText == this.answers[i].text){
-                        this.answers[i].votes++
+                        this.answers[i].votes += (this.getPeriodOfGitHub / 2) + 1
                         this.answers[i].isVoted = !this.answers[i].isVoted
                       }
                     }
@@ -181,7 +184,7 @@ export default {
                     // 表示する票数を減らす
                     for(var i in this.answers){
                       if(preAnsText == this.answers[i].text){
-                        this.answers[i].votes--
+                        this.answers[i].votes -= (this.getPeriodOfGitHub / 2) + 1
                         this.answers[i].isVoted = !this.answers[i].isVoted
                       }
                     }
@@ -214,7 +217,7 @@ export default {
             // 表示する票数を増やす
             for(var i in this.answers){
               if(ansText == this.answers[i].text){
-                this.answers[i].votes++
+                this.answers[i].votes += (this.getPeriodOfGitHub / 2) + 1
                 this.answers[i].isVoted = !this.answers[i].isVoted
               }
             }
