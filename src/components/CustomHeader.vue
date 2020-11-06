@@ -60,16 +60,18 @@ export default {
         this.isUserExist = true
         this.userName = user.displayName
         this.initializeUserdb(user)
-        this.$router.go({name: "HomePage"});
       }).catch(function() {
         // ログイン失敗
       });
     },
     //デバッグ用のサインアウトメソッド
     logout: function(){
-      firebase.auth().signOut().then(function() {
+      var router = this.$router
+      firebase.auth().signOut()
+      .then(function() {
         // Sign-out successful.
         console.log("サインアウト")
+        router.push({ name: "HomePage" }, () => {} );
       }).catch(function(error) {
         // An error happened.
         console.log("サインアウトエラー")
