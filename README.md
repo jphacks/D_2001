@@ -11,7 +11,7 @@
 　
 ### ネーミング x Tech
 
-開発中になんとなく変数名やメソッド名を決めてもモヤモヤするときもありませんか？
+開発中になんとなく変数名やメソッド名を決めてもモヤモヤするときありませんか？
 
 「書いてみたけどこれでちゃんと伝わるかな〜」
 
@@ -55,25 +55,14 @@
 
 暫定的に名前を決めるためであれば、ユーザは**codic**を利用すると思います。
 
-しかし、私たちの**name_it**ではリファクタリングやチームでのコード共有のタイミングに焦点を置き、
-**name_it**でより良いネーミングへの知見を得てもらいたいと考えています。
+しかし、私たちの**name_it**ではリファクタリングやチームでのコード共有のタイミングに焦点を置きました。
+
+**name_it**を使うことでより良いネーミングへの知見を共有してもらいたいと考えています。
 
 #### 2. 特長2
 GitHub連携によりユーザ登録ができます。
 
-[GitHub Readme Stats](https://github.com/anuraghazra/github-readme-stats)から取得した
-ランクを元に一つの投稿に対する投票数が決まっています。
-
-- S+(top 1%): 5票
-- S(top 25%): 4票
-- A++(top 45%): 3票
-- A+(top 60%): 2票
-- B+(それ以外): 1票
-
 より経験のあるエンジニアの票に重み付けがされるようになっています。
-
-※ GitHub Readme Statsのランクはcommit数、Issue数、PR数などの統計情報を元に計算されています。
-詳しくは、[github-readme-stats/src/calculateRank.js](https://github.com/anuraghazra/github-readme-stats/blob/master/src/calculateRank.js)をご参照ください。
 
 #### 3. 特長3
 markdown形式で投稿に対する説明を記述できます。
@@ -99,22 +88,21 @@ markdown形式で投稿に対する説明を記述できます。
 * 基本的な機能が備わった段階でフィードバックをいただくためにTwitterにてリリース情報を投稿しました([v0.1.2リリース時](https://github.com/jphacks/D_2001/releases/tag/v0.1.2))
 * 毎日DailyScrumや振り返りなど可能な限りアジャイルチックな開発を目指しました(詳しくは[Wiki](https://github.com/jphacks/D_2001/wiki)をご参照ください)
 
-<img width="200" src="https://user-images.githubusercontent.com/40158101/98358461-15d78480-206a-11eb-8cb5-2266c652789e.png">
 
-<img width="200" src="https://user-images.githubusercontent.com/40158101/98358505-2982eb00-206a-11eb-9510-9427e248ec8b.png">
+<img width="500" src="https://user-images.githubusercontent.com/40158101/98358505-2982eb00-206a-11eb-9510-9427e248ec8b.png">
+
+<img width="500" src="https://user-images.githubusercontent.com/40158101/98358461-15d78480-206a-11eb-8cb5-2266c652789e.png">
 
 ## 開発技術
 ### 活用した技術
-#### API・データ
-* GitHub Readme Stats
 
 #### フレームワーク・ライブラリ・モジュール
 * Vue.js
- - vue-markdown
- - bootstrap-vue
+  - vue-markdown
+  - bootstrap-vue
 * Firebase
- - Firebase Hosting
- - Cloud Firestore
+  - Firebase Hosting
+  - Cloud Firestore
 * CircleCI
 
 #### デバイス
