@@ -5,6 +5,7 @@
       <div class="section-container profile-container">
         <div>UserName :</div>
         <div v-text="userName" class="username-text"></div>
+        <div v-text="periodOfGitHub" class="username-text"></div>
       </div>
       <div class="section-container">
         <b-tabs justified class="profile-post-list-container">
@@ -39,6 +40,7 @@ export default {
       userName: "",
       questions: [],
       staredQuestions: [],
+      periodOfGitHub: "",
     }
   },
   computed:{
@@ -84,6 +86,16 @@ export default {
     .catch(err => {
       console.log('Error getting documents', err);
     });
+
+    db.collection("Users").doc(userID).get().then(snapshot => {
+      if(snapshot.exists){
+        var createTime = snapshot.data().createAt.seconds
+        var now = new Date()
+        var milliDiffTime = now.getTime() - new Date(createTime * 1000).getTime()
+        var diffYear = Math.floor(milliDiffTime / 1000 / 60 / 60 / 24 / 365)
+        this.periodOfGitHub = "GitHub歴 : "+diffYear + "年"
+      }
+    })
   },
 }
 </script>

@@ -57,11 +57,12 @@ export default {
         // ログイン成功
         var user = result.user;
         this.isUserExist = true
+        var createAt = result.additionalUserInfo.profile.created_at
         this.userName = result.additionalUserInfo.profile.login
         user.updateProfile({
           displayName: this.userName
         })
-        this.initializeUserdb(user)
+        this.initializeUserdb(user, createAt)
       }).catch(function() {
         // ログイン失敗
       });
@@ -96,11 +97,11 @@ export default {
       // ログイン確認終了
       this.loading = false
     },
-    initializeUserdb: function(user){
+    initializeUserdb: function(user, createAt){
       console.log("DBの初期化  "+ user.uid)
-      
       db.collection("Users").doc(user.uid).set({
-        name: this.userName
+        name: this.userName,
+        createAt: new Date(createAt)
       })
       .then(function() {
           console.log("Document successfully written!");
