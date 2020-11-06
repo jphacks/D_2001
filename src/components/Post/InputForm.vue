@@ -3,7 +3,7 @@
     <!-- タイトル入力欄 -->
     <div class="section-container">
       <h2>タイトル</h2>
-      <b-form-input placeholder="タイトル" v-model="title"></b-form-input>
+      <b-form-input placeholder="投稿のタイトルを入力してください" v-model="title"></b-form-input>
     </div>
     <!-- 詳細入力欄 -->
     <div class="section-container">
@@ -11,7 +11,7 @@
       <b-tabs>
         <b-tab title="Write" active>
           <div class="write-container">
-            <b-form-textarea placeholder="説明を記入してください" v-model="description" rows="10" max-rows="100"></b-form-textarea>
+            <b-form-textarea placeholder="詳細な説明を入力してください" v-model="description" rows="10" max-rows="100"></b-form-textarea>
             <div class="markdown-description">
               <img src="../../assets/iconfinder_markdown_298823.svg" alt="markdown-icon" class="markdown-icon">Styling with Markdown is supported
             </div>
