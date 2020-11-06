@@ -6,6 +6,11 @@
         <div>UserName :</div>
         <div v-text="userName" class="username-text"></div>
       </div>
+      <div class="section-container profile-container">
+        <div>GitHub歴 :</div>
+        <div v-text="periodOfGitHub" class="username-text"></div>
+        <div>年</div>
+      </div>
       <div class="section-container">
         <b-tabs justified class="profile-post-list-container">
           <b-tab title="投稿" active>
@@ -39,6 +44,7 @@ export default {
       userName: "",
       questions: [],
       staredQuestions: [],
+      periodOfGitHub: "",
     }
   },
   computed:{
@@ -47,12 +53,17 @@ export default {
     },
     getUserID(){
       return this.$store.getters.userID
+    },
+    getPeriodOfGitHub(){
+      return this.$store.getters.periodOfGitHub
     }
   },
   mounted: function(){
     // ユーザー名の取得
     this.userName = this.getUserName
     var userID = this.getUserID
+    // GitHub歴の取得
+    this.periodOfGitHub = this.getPeriodOfGitHub
     //自分の投稿一覧を取得する
     var ref = db.collection('Questions').orderBy('time', 'desc')
     var staredRef = db.collection("Users").doc(userID).collection("Questions")

@@ -40,7 +40,7 @@ export default {
   data() {
     return {
       isUserExist: false,
-      userName: String,
+      userName: "",
       currentuser: firebase.auth().currentUser,
       loading: true,
     }
@@ -56,11 +56,17 @@ export default {
       firebase.auth().signInWithPopup(provider).then((result) => {
         // ログイン成功
         var user = result.user;
-        var createAt = result.additionalUserInfo.profile.created_at
-        console.log(user.displayName)
         this.isUserExist = true
-        this.userName = user.displayName
+        var createAt = result.additionalUserInfo.profile.created_at
+        this.userName = result.additionalUserInfo.profile.login
+        user.updateProfile({
+          displayName: this.userName
+        })
         this.initializeUserdb(user, createAt)
+        var now = new Date()
+        var milliDiffTime = now.getTime() - new Date(createAt).getTime()
+        var diffYear = Math.floor(milliDiffTime / 1000 / 60 / 60 / 24 / 365)
+        this.$store.dispatch('updatePeriodOfGitHub', diffYear)
       }).catch(function() {
         // ログイン失敗
       });
@@ -84,14 +90,10 @@ export default {
       if (user) {
         console.log("ログイン済み "+ user.displayName)
         this.isUserExist = true
-        if(user.displayName == null){
-          this.userName = "Guest"
-        } else {
-          this.userName = user.displayName
-        }
+        this.userName = user.displayName
         //storeに値をuserIDを保存
         this.$store.dispatch('updateUserID', user.uid)
-        this.$store.dispatch('updateUserName', this.userName)
+        this.$store.dispatch('updateUserName', user.displayName)
       } else {
         console.log("未ログイン")
         this.isUserExist = false
@@ -101,28 +103,16 @@ export default {
     },
     initializeUserdb: function(user, createAt){
       console.log("DBの初期化  "+ user.uid)
-      if(user.displayName == null){
-        db.collection("Users").doc(user.uid).set({
-          name: "Guest"
-        })
-        .then(function() {
-            console.log("Document successfully written!");
-        })
-        .catch(function(error) {
-            console.error("Error writing document: ", error);
-        });
-      } else {
-        db.collection("Users").doc(user.uid).set({
-          name: this.userName,
-          createAt: new Date(createAt)
-        })
-        .then(function() {
-            console.log("Document successfully written!");
-        })
-        .catch(function(error) {
-            console.error("Error writing document: ", error);
-        });
-      }
+      db.collection("Users").doc(user.uid).set({
+        name: this.userName,
+        createAt: new Date(createAt)
+      })
+      .then(function() {
+          console.log("Document successfully written!");
+      })
+      .catch(function(error) {
+          console.error("Error writing document: ", error);
+      });
     },
     toPostPage: function(){
       if(this.isUserExist){
