@@ -26,6 +26,7 @@
         <b-button v-on:click="addAnswer" variant="outline-dark">追加する</b-button>
       </b-input-group>
       <div class="section-container vote-btn-container">
+        <div>※あなたの投票で{{pollOfUser}}票入ります</div>
         <b-button v-on:click="vote" variant="primary">投票する</b-button>
       </div>
       <!-- コメント -->
@@ -53,6 +54,7 @@ export default {
       candidate: "",
       selectedIndex: "",
       docID: "",
+      pollOfUser: 0,
     }
   },
   components: {
@@ -65,9 +67,14 @@ export default {
   computed:{
     getUserID(){
       return this.$store.getters.userID
+    },
+    getPeriodOfGitHub(){
+      return this.$store.getters.periodOfGitHub
     }
   },
   mounted: async function(){
+    // 自分の投票数を取得
+    this.pollOfUser = Math.floor((this.getPeriodOfGitHub / 2)) + 1
     // URLからドキュメントIDを取得
     this.docID = this.$route.params.id
     var ref = db.collection("Questions").doc(this.docID)
@@ -164,12 +171,12 @@ export default {
                     // 表示する票数を増やす
                     for(var i in this.answers){
                       if(ansText == this.answers[i].text){
-                        this.answers[i].votes++
+                        this.answers[i].votes += this.pollOfUser
                         this.answers[i].isVoted = !this.answers[i].isVoted
                       }
                     }
                     dbRef.doc(answerID).update({
-                      votesNum: num+1
+                      votesNum: num + this.pollOfUser
                     })
                   }
                 })
@@ -181,12 +188,12 @@ export default {
                     // 表示する票数を減らす
                     for(var i in this.answers){
                       if(preAnsText == this.answers[i].text){
-                        this.answers[i].votes--
+                        this.answers[i].votes -=  this.pollOfUser
                         this.answers[i].isVoted = !this.answers[i].isVoted
                       }
                     }
                     dbRef.doc(preAnswerId).update({
-                      votesNum: preAnsNum-1
+                      votesNum: preAnsNum - this.pollOfUser
                     })
                   }
                   resolve(answerID)
@@ -214,12 +221,12 @@ export default {
             // 表示する票数を増やす
             for(var i in this.answers){
               if(ansText == this.answers[i].text){
-                this.answers[i].votes++
+                this.answers[i].votes +=  this.pollOfUser
                 this.answers[i].isVoted = !this.answers[i].isVoted
               }
             }
             dbRef.doc(answerID).update({
-              votesNum: num+1
+              votesNum: num + this.pollOfUser
             })
             resolve()
           }
