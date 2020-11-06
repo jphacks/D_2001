@@ -11,7 +11,7 @@
       <hr>
       <!-- 詳細欄 -->
       <div class="section-container">
-        <div v-if="description != undefined">{{description}}</div>
+        <vue-markdown :source="description"></vue-markdown>
       </div>
       <hr>
       <!-- 選択肢欄 -->
@@ -42,6 +42,7 @@ import CustomHeader from '../CustomHeader'
 import AnswerContent from './AnswerContent'
 import StarButton from './StarButton'
 import CommentContent from './CommentContent'
+import VueMarkdown from 'vue-markdown'
 export default {
   name: 'DetailsPage',
   data: function() {
@@ -59,6 +60,7 @@ export default {
     AnswerContent,
     StarButton,
     CommentContent,
+    VueMarkdown,
   },
   computed:{
     getUserID(){

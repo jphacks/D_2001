@@ -8,7 +8,14 @@
     <!-- 詳細入力欄 -->
     <div class="section-container">
       <h2>詳細</h2>
-      <b-form-textarea placeholder="説明を記入してください" v-model="description" rows="10" no-resize></b-form-textarea>
+      <b-tabs>
+        <b-tab title="Write" active>
+          <b-form-textarea placeholder="説明を記入してください" v-model="description" rows="10" no-resize></b-form-textarea>
+        </b-tab>
+        <b-tab title="Preview">
+          <vue-markdown :source="description"></vue-markdown>
+        </b-tab>
+      </b-tabs>
     </div>
     <!-- 選択肢入力欄 -->
     <div class="section-container">
@@ -35,6 +42,7 @@
 
 <script>
 import {db} from '../../plugins/firebase';
+import VueMarkdown from 'vue-markdown'
 export default {
   name: 'InputForm',
   data: function() {
@@ -43,6 +51,9 @@ export default {
       title: "",
       description: ""
     };
+  },
+  components: {
+    VueMarkdown
   },
   computed:{
     getUserID(){
