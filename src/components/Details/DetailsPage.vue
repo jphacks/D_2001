@@ -2,6 +2,9 @@
   <div>
     <CustomHeader/>
     <b-container id="contents-container">
+    <!-- 投稿者情報蘭 -->
+      {{contributor}}
+      {{periodOfGitHub}}
       <!-- タイトル欄 -->
       <div class="title-container">
         <div v-if="title != undefined" class="h1">{{title}}</div>
@@ -54,6 +57,8 @@ export default {
       candidate: "",
       selectedIndex: "",
       docID: "",
+      contributor: "",
+      periodOfGitHub: "",
       pollOfUser: 0,
     }
   },
@@ -78,11 +83,22 @@ export default {
     // URLからドキュメントIDを取得
     this.docID = this.$route.params.id
     var ref = db.collection("Questions").doc(this.docID)
-    // 投稿のタイトルと詳細を取得
+    // 投稿のタイトル・詳細・投稿者を取得
     ref.get().then(doc => {
       if(doc.exists){
         this.title = doc.data().title
         this.description = doc.data().description
+        db.collection("Users").doc(doc.data().userID)
+        .get().then(doc => {
+          if(doc.exists){
+            this.contributor = doc.data().name
+            var createTime = doc.data().createAt.seconds
+            var now = new Date()
+            var milliDiffTime = now.getTime() - new Date(createTime * 1000).getTime()
+            var diffYear = Math.floor(milliDiffTime / 1000 / 60 / 60 / 24 / 365)
+            this.periodOfGitHub = "GitHub歴 : "+diffYear + "年"
+          }
+        })
       }
     })
     // 回答一覧を取得
