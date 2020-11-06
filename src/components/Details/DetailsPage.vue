@@ -94,29 +94,40 @@ export default {
   },
   methods:{
     addAnswer: function(){
-      //回答を追加する
-      if(this.candidate == ""){
-        alert("追加する選択肢には文字を入れてください")
-        return
-      }
-      db.collection('Questions').doc(this.docID).collection('Answers').add({
-        text: this.candidate,
-        votesNum: 0
-      })
-      .then((doc) => {
-        console.log("Answer successfully written!");
-        var answerData = {
-          id: doc.id,
-          text: this.candidate,
-          votes: 0,
-          isVoted: false
+      var candidate = this.candidate
+      try{
+        this.answers.forEach(function(answer){
+          if(answer.text == candidate) {
+            throw "既に同じ選択肢があります."
+          }
+        })
+        //回答を追加する
+        if(this.candidate == ""){
+          alert("追加する選択肢には文字を入れてください")
+          return
         }
-        this.answers.push(answerData)
-        this.candidate = ""
-      })
-      .catch(function(error) {
-          console.error("Error writing document: ", error);
-      });
+        db.collection('Questions').doc(this.docID).collection('Answers').add({
+          text: this.candidate,
+          votesNum: 0
+        })
+        .then((doc) => {
+          console.log("Answer successfully written!");
+          var answerData = {
+            id: doc.id,
+            text: this.candidate,
+            votes: 0,
+            isVoted: false
+          }
+          this.answers.push(answerData)
+          this.candidate = ""
+        })
+        .catch(function(error) {
+            console.error("Error writing document: ", error);
+        });
+      }
+      catch(e) {
+        alert(e)
+      }
     },
     setIndex: function(index){
       this.selectedIndex = index
