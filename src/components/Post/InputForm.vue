@@ -10,10 +10,13 @@
       <h2>詳細</h2>
       <b-tabs>
         <b-tab title="Write" active>
-          <b-form-textarea placeholder="説明を記入してください" v-model="description" rows="10" no-resize></b-form-textarea>
+          <div class="write-container">
+            <div>markdownで記入できます！</div>
+            <b-form-textarea placeholder="説明を記入してください" v-model="description" rows="10" no-resize></b-form-textarea>
+          </div>
         </b-tab>
         <b-tab title="Preview">
-          <vue-markdown :source="description"></vue-markdown>
+          <vue-markdown :source="description" class="preview-container"></vue-markdown>
         </b-tab>
       </b-tabs>
     </div>
@@ -157,6 +160,31 @@ export default {
 
 h2 {
   margin-bottom: 1rem;
+}
+
+.write-container{
+  /* height固定のためのマジックナンバー */
+  height: 308px;
+
+  padding: 5px;
+  border: 1px solid #ced4da;
+  border-top: 0px;
+  border-radius: 0 0 0.25rem 0.25rem;
+}
+
+.write-container > *{
+  margin-top: 10px;
+}
+
+.preview-container{
+  /* height固定のためのマジックナンバー */
+  height: 308px;
+
+  overflow: auto;
+  padding: 20px;
+  border: 1px solid #ced4da;
+  border-top: 0px;
+  border-radius: 0 0 0.25rem 0.25rem;
 }
 
 .option{
