@@ -167,12 +167,12 @@ export default {
                     // 表示する票数を増やす
                     for(var i in this.answers){
                       if(ansText == this.answers[i].text){
-                        this.answers[i].votes += (this.getPeriodOfGitHub / 2) + 1
+                        this.answers[i].votes += Math.floor((this.getPeriodOfGitHub / 2)) + 1
                         this.answers[i].isVoted = !this.answers[i].isVoted
                       }
                     }
                     dbRef.doc(answerID).update({
-                      votesNum: num+1
+                      votesNum: num+ Math.floor((this.getPeriodOfGitHub / 2)) + 1
                     })
                   }
                 })
@@ -184,12 +184,12 @@ export default {
                     // 表示する票数を減らす
                     for(var i in this.answers){
                       if(preAnsText == this.answers[i].text){
-                        this.answers[i].votes -= (this.getPeriodOfGitHub / 2) + 1
+                        this.answers[i].votes -=  Math.floor((this.getPeriodOfGitHub / 2)) + 1
                         this.answers[i].isVoted = !this.answers[i].isVoted
                       }
                     }
                     dbRef.doc(preAnswerId).update({
-                      votesNum: preAnsNum-1
+                      votesNum: preAnsNum - (Math.floor((this.getPeriodOfGitHub / 2)) + 1)
                     })
                   }
                   resolve(answerID)
@@ -217,12 +217,12 @@ export default {
             // 表示する票数を増やす
             for(var i in this.answers){
               if(ansText == this.answers[i].text){
-                this.answers[i].votes += (this.getPeriodOfGitHub / 2) + 1
+                this.answers[i].votes +=  Math.floor((this.getPeriodOfGitHub / 2)) + 1
                 this.answers[i].isVoted = !this.answers[i].isVoted
               }
             }
             dbRef.doc(answerID).update({
-              votesNum: num+1
+              votesNum: num + Math.floor((this.getPeriodOfGitHub / 2)) + 1
             })
             resolve()
           }
