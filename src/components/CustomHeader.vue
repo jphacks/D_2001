@@ -40,7 +40,7 @@ export default {
   data() {
     return {
       isUserExist: false,
-      userName: String,
+      userName: "",
       currentuser: firebase.auth().currentUser,
       loading: true,
     }
@@ -56,9 +56,11 @@ export default {
       firebase.auth().signInWithPopup(provider).then((result) => {
         // ログイン成功
         var user = result.user;
-        console.log(user.displayName)
         this.isUserExist = true
-        this.userName = user.displayName
+        this.userName = result.additionalUserInfo.profile.login
+        user.updateProfile({
+          displayName: this.userName
+        })
         this.initializeUserdb(user)
       }).catch(function() {
         // ログイン失敗
@@ -83,14 +85,10 @@ export default {
       if (user) {
         console.log("ログイン済み "+ user.displayName)
         this.isUserExist = true
-        if(user.displayName == null){
-          this.userName = "Guest"
-        } else {
-          this.userName = user.displayName
-        }
+        this.userName = user.displayName
         //storeに値をuserIDを保存
         this.$store.dispatch('updateUserID', user.uid)
-        this.$store.dispatch('updateUserName', this.userName)
+        this.$store.dispatch('updateUserName', user.displayName)
       } else {
         console.log("未ログイン")
         this.isUserExist = false
@@ -100,27 +98,16 @@ export default {
     },
     initializeUserdb: function(user){
       console.log("DBの初期化  "+ user.uid)
-      if(user.displayName == null){
-        db.collection("Users").doc(user.uid).set({
-          name: "Guest"
-        })
-        .then(function() {
-            console.log("Document successfully written!");
-        })
-        .catch(function(error) {
-            console.error("Error writing document: ", error);
-        });
-      } else {
-        db.collection("Users").doc(user.uid).set({
-          name: user.displayName
-        })
-        .then(function() {
-            console.log("Document successfully written!");
-        })
-        .catch(function(error) {
-            console.error("Error writing document: ", error);
-        });
-      }
+      
+      db.collection("Users").doc(user.uid).set({
+        name: this.userName
+      })
+      .then(function() {
+          console.log("Document successfully written!");
+      })
+      .catch(function(error) {
+          console.error("Error writing document: ", error);
+      });
     },
     toPostPage: function(){
       if(this.isUserExist){
