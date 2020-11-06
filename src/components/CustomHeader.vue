@@ -56,10 +56,11 @@ export default {
       firebase.auth().signInWithPopup(provider).then((result) => {
         // ログイン成功
         var user = result.user;
+        var createAt = result.additionalUserInfo.profile.created_at
         console.log(user.displayName)
         this.isUserExist = true
         this.userName = user.displayName
-        this.initializeUserdb(user)
+        this.initializeUserdb(user, createAt)
       }).catch(function() {
         // ログイン失敗
       });
@@ -98,7 +99,7 @@ export default {
       // ログイン確認終了
       this.loading = false
     },
-    initializeUserdb: function(user){
+    initializeUserdb: function(user, createAt){
       console.log("DBの初期化  "+ user.uid)
       if(user.displayName == null){
         db.collection("Users").doc(user.uid).set({
@@ -112,7 +113,8 @@ export default {
         });
       } else {
         db.collection("Users").doc(user.uid).set({
-          name: user.displayName
+          name: this.userName,
+          createAt: new Date(createAt)
         })
         .then(function() {
             console.log("Document successfully written!");
