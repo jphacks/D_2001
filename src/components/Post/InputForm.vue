@@ -11,8 +11,10 @@
       <b-tabs>
         <b-tab title="Write" active>
           <div class="write-container">
-            <div>markdownで記入できます！</div>
-            <b-form-textarea placeholder="説明を記入してください" v-model="description" rows="10" no-resize></b-form-textarea>
+            <b-form-textarea placeholder="説明を記入してください" v-model="description" rows="10" max-rows="100"></b-form-textarea>
+            <div class="markdown-description">
+              <img src="../../assets/iconfinder_markdown_298823.svg" alt="markdown-icon" class="markdown-icon">Styling with Markdown is supported
+            </div>
           </div>
         </b-tab>
         <b-tab title="Preview">
@@ -164,7 +166,7 @@ h2 {
 
 .write-container{
   /* height固定のためのマジックナンバー */
-  height: 308px;
+  min-height: 288px;
 
   padding: 5px;
   border: 1px solid #ced4da;
@@ -172,15 +174,23 @@ h2 {
   border-radius: 0 0 0.25rem 0.25rem;
 }
 
-.write-container > *{
+/* .write-container > *{
   margin-top: 10px;
+} */
+
+.markdown-description{
+  padding: 5px 10px;
+}
+
+.markdown-icon{
+  width: 1rem;
+  margin-right: 5px;
 }
 
 .preview-container{
   /* height固定のためのマジックナンバー */
-  height: 308px;
-
-  overflow: auto;
+  min-height: 288px;
+  
   padding: 20px;
   border: 1px solid #ced4da;
   border-top: 0px;
