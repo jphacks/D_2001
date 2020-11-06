@@ -58,7 +58,7 @@ export default {
       selectedIndex: "",
       docID: "",
       contributor: "",
-      periodOfGitHub: ""
+      periodOfGitHub: "",
       pollOfUser: 0,
     }
   },
