@@ -4,17 +4,21 @@ import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex)
 
-const initialState = {
-  docID: '',
-  userID: '',
-  userName: '',
-  periodOfGitHub: '',
-}
+// const initialState = {
+//   docID: '',
+//   userID: '',
+//   userName: '',
+//   periodOfGitHub: 0,
+// }
 
 const store = new Vuex.Store({
   //state:コンポーネントでいうdata
   state: {
-    initialState
+    // initialState
+    docID: '',
+    userID: '',
+    userName: '',
+    periodOfGitHub: 0,
   },
 
   //getters:コンポーネントでいうcomputed的なもの
@@ -29,6 +33,7 @@ const store = new Vuex.Store({
       return state.userName
     },
     periodOfGitHub(state){
+      console.log(state.periodOfGitHub)
       return state.periodOfGitHub
     }
   },
