@@ -2,7 +2,6 @@
   <div class="post-content" @click="toDetails()">
     <div class="post-texts">
       <div v-text="title" class="title-texts"></div>
-      <div v-text="description" class="description-texts"></div>
       <div v-text="diffTime" class="elapsed-time-texts"></div>
     </div>
   </div>
@@ -54,10 +53,9 @@ export default{
 
 <style scoped>
 .post-content{
-  height: 100px;
   border-bottom: 2px solid;
   border-color: #dddddd;
-  padding: 7px 30px;
+  padding: 5px 30px;
   cursor: pointer;
 }
 
@@ -73,8 +71,8 @@ export default{
 }
 
 .title-texts{
+  padding: 10px 0;
   font-size: 1.3rem;
-  font-weight: bold;
   -webkit-line-clamp: 1;
 }
 

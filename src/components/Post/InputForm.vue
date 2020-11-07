@@ -3,17 +3,22 @@
     <!-- タイトル入力欄 -->
     <div class="section-container">
       <h2>タイトル</h2>
-      <b-form-input placeholder="タイトル" v-model="title"></b-form-input>
+      <b-form-input placeholder="投稿のタイトルを入力してください" v-model="title"></b-form-input>
     </div>
     <!-- 詳細入力欄 -->
     <div class="section-container">
       <h2>詳細</h2>
       <b-tabs>
         <b-tab title="Write" active>
-          <b-form-textarea placeholder="説明を記入してください" v-model="description" rows="10" no-resize></b-form-textarea>
+          <div class="write-container">
+            <b-form-textarea placeholder="詳細な説明を入力してください" v-model="description" rows="10" max-rows="100"></b-form-textarea>
+            <div class="markdown-description">
+              <img src="../../assets/iconfinder_markdown_298823.svg" alt="markdown-icon" class="markdown-icon">Styling with Markdown is supported
+            </div>
+          </div>
         </b-tab>
         <b-tab title="Preview">
-          <vue-markdown :source="description"></vue-markdown>
+          <vue-markdown :source="description" class="preview-container"></vue-markdown>
         </b-tab>
       </b-tabs>
     </div>
@@ -157,6 +162,39 @@ export default {
 
 h2 {
   margin-bottom: 1rem;
+}
+
+.write-container{
+  /* height固定のためのマジックナンバー */
+  min-height: 288px;
+
+  padding: 5px;
+  border: 1px solid #ced4da;
+  border-top: 0px;
+  border-radius: 0 0 0.25rem 0.25rem;
+}
+
+/* .write-container > *{
+  margin-top: 10px;
+} */
+
+.markdown-description{
+  padding: 5px 10px;
+}
+
+.markdown-icon{
+  width: 1rem;
+  margin-right: 5px;
+}
+
+.preview-container{
+  /* height固定のためのマジックナンバー */
+  min-height: 288px;
+  
+  padding: 20px;
+  border: 1px solid #ced4da;
+  border-top: 0px;
+  border-radius: 0 0 0.25rem 0.25rem;
 }
 
 .option{
