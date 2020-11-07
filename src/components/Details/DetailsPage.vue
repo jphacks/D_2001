@@ -29,8 +29,10 @@
         <b-button v-on:click="addAnswer" variant="outline-dark">追加する</b-button>
       </b-input-group>
       <div class="section-container vote-btn-container">
-        <div>※あなたの投票で{{pollOfUser}}票入ります</div>
-        <b-button v-on:click="vote" variant="primary">投票する</b-button>
+        <div v-if="userExists">※あなたの投票で{{pollOfUser}}票入ります</div>
+        <b-button v-if="userExists" v-on:click="vote" variant="primary">投票する</b-button>
+        <div v-if="!userExists">※投票するにはログインしてください</div>
+        <b-button v-if="!userExists" disabled v-on:click="vote" variant="primary">投票する</b-button>
       </div>
       <!-- コメント -->
       <div class="section-container">
@@ -60,6 +62,7 @@ export default {
       contributor: "",
       periodOfGitHub: "",
       pollOfUser: 0,
+      userExists: false,
     }
   },
   components: {
@@ -79,7 +82,12 @@ export default {
   },
   mounted: async function(){
     // 自分の投票数を取得
-    this.pollOfUser = Math.floor((this.getPeriodOfGitHub / 2)) + 1
+    if(this.getUserID == ""){
+      this.userExists = false
+    }else {
+      this.userExists = true
+      this.pollOfUser = Math.floor((this.getPeriodOfGitHub / 2)) + 1
+    }
     // URLからドキュメントIDを取得
     this.docID = this.$route.params.id
     var ref = db.collection("Questions").doc(this.docID)
@@ -277,7 +285,7 @@ export default {
     },
     isVotedBySelf: function(answerID){
       return new Promise(resolve => {
-        if(this.getUserID == null){
+        if(this.getUserID == ""){
           resolve(false)
         }
         db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.docID)
