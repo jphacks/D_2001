@@ -20,7 +20,7 @@
       <!-- 選択肢欄 -->
       <div class="section-container">
         <div v-for="(answer, index) in answers" v-bind:key="index" class="options-container">
-          <AnswerContent @sendIndex="setIndex" v-bind:answer="{text: answer.text, index: index, votes: answer.votes, isVoted: answer.isVoted}"/>
+          <AnswerContent @sendIndex="setIndex" v-bind:answer="{text: answer.text, index: index, votes: answer.votes, isVoted: answer.isVoted, voting: answer.voting}"/>
         </div>
       </div>
       <!-- 選択肢追加入力欄 -->
@@ -105,11 +105,24 @@ export default {
     ref.collection("Answers").get().then(querySnapshot => {
       querySnapshot.forEach(async (doc) => {
         var isVoted = await this.isVotedBySelf(doc.id)
-        var answerData = {
-          id: doc.id,
-          text: doc.data().text,
-          votes: doc.data().votesNum,
-          isVoted: isVoted
+        console.log(isVoted)
+        var answerData
+        if(isVoted != "not voting"){
+          answerData = {
+            id: doc.id,
+            text: doc.data().text,
+            votes: doc.data().votesNum,
+            isVoted: isVoted,
+            voting: true, //投票したことがある
+          }
+        } else{
+          answerData = {
+            id: doc.id,
+            text: doc.data().text,
+            votes: doc.data().votesNum,
+            isVoted: false,
+            voting: false, //投票したことがない
+          }
         }
         this.answers.push(answerData)
       })
@@ -240,6 +253,7 @@ export default {
                 this.answers[i].votes +=  this.pollOfUser
                 this.answers[i].isVoted = !this.answers[i].isVoted
               }
+              this.answers[i].voting = true
             }
             dbRef.doc(answerID).update({
               votesNum: num + this.pollOfUser
@@ -269,13 +283,15 @@ export default {
         db.collection("Users").doc(this.getUserID).collection("Questions").doc(this.docID)
         .get().then(snapshot => {
           if(snapshot.exists){
-            if(snapshot.data().answerId == answerID){
+            if(snapshot.data().answerId == null){
+              resolve("not voting")
+            }else if(snapshot.data().answerId == answerID){
               resolve(true)
             } else {
               resolve(false)
             }
           } else{
-            resolve(false)
+            resolve("not voting")
           }
         })
       })

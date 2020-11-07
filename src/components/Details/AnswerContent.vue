@@ -4,7 +4,8 @@
     <div v-for="n in displayList" :key="n">
       <img src="../../assets/checkbox-icon-24px.svg" alt="check box icon" v-if="answer.isVoted" class="check-icon">
     </div>
-    <div class="answer-votes">{{ answer.votes }} 票</div>
+    <div class="answer-votes" v-if="answer.voting">{{ answer.votes }} 票</div>
+    <div class="answer-votes" v-if="!answer.voting">？ 票</div>
   </b-button>
 </template>
 
