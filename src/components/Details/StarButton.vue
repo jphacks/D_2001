@@ -26,16 +26,18 @@ export default {
     // URLからドキュメントIDを取得
     this.docID = this.$route.params.id
     // データベースからスター状態を取得
-    var userRef = db.collection("Users").doc(this.userID).collection("Questions").doc(this.docID)
-    userRef.get().then(snapshot => {
-      if(snapshot.exists){
-        if(snapshot.data().stared != null){
-          this.stared = snapshot.data().stared
+    if(this.userID != ""){
+      var userRef = db.collection("Users").doc(this.userID).collection("Questions").doc(this.docID)
+      userRef.get().then(snapshot => {
+        if(snapshot.exists){
+          if(snapshot.data().stared != null){
+            this.stared = snapshot.data().stared
+          }
+        }else{
+          //投票もお気に入りもしていない
         }
-      }else{
-        //投票もお気に入りもしていない
-      }
-    })
+      })
+    }
   },
   methods:{
     pushStar: function(){
