@@ -67,6 +67,9 @@ export default {
         var milliDiffTime = now.getTime() - new Date(createAt).getTime()
         var diffYear = Math.floor(milliDiffTime / 1000 / 60 / 60 / 24 / 365)
         this.$store.dispatch('updatePeriodOfGitHub', diffYear)
+        //ページリロード
+        // console.log(this.$route.name)
+        this.$router.go({ name: this.$route.name })
       }).catch(function() {
         // ログイン失敗
       });
