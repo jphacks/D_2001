@@ -41,6 +41,7 @@ export default {
     return {
       isUserExist: false,
       userName: "",
+      userID: "",
       currentuser: firebase.auth().currentUser,
       loading: true,
     }
@@ -94,6 +95,7 @@ export default {
         console.log("ログイン済み "+ user.displayName)
         this.isUserExist = true
         this.userName = user.displayName
+        this.userID = user.uid
         //storeに値をuserIDを保存
         this.$store.dispatch('updateUserID', user.uid)
         this.$store.dispatch('updateUserName', user.displayName)
@@ -137,7 +139,8 @@ export default {
         // ページリロード
         // this.$router.go({ name: 'ProfilePage' })
       } else{
-        this.$router.push({name: 'ProfilePage'});
+        console.log(this.userID)
+        this.$router.push({name: 'ProfilePage', params: {userID: this.userID}});
       }
     },
   },

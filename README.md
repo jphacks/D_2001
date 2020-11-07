@@ -5,7 +5,7 @@
 
 # name_it
 
-[![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2020/09/JPHACKS2020_ogp.jpg)](https://www.youtube.com/watch?v=G5rULR53uMk)
+[![name_it](doc/name_it.png)](https://youtu.be/6HeX8ccLHQo)
 
 ## 製品概要
 　
@@ -75,12 +75,17 @@ markdown形式で投稿に対する説明を記述できます。
 #### 投稿のラベリング
 投稿へのラベリング機能を追加することで似たような悩みを持つ人の投稿を検索できるようになります。
 
+#### ランクのアップデート
+[GitHub Readme Stats](https://github.com/anuraghazra/github-readme-stats)による、より多くのパラメータを用いたランクを採用したいと考えています。
+
 
 ### 注力したこと（こだわり等）
 * より開発経験のある人の票に価値があるようにGitHub Readme Statsの統計データを使用しました
 * 想定するユーザ層(実際に私たちと同じように一度決まったネーミングに対して時間をかけて再考する人)の調査のためにTwitterのPoll機能で投票を取りました
 * 基本的な機能が備わった段階でフィードバックをいただくためにTwitterにてリリース情報を投稿しました([v0.1.2リリース時](https://github.com/jphacks/D_2001/releases/tag/v0.1.2))
+* オリジナルアイコンを作成しました
 * 毎日DailyScrumや振り返りなど可能な限りアジャイルチックな開発を目指しました(詳しくは[Wiki](https://github.com/jphacks/D_2001/wiki)をご参照ください)
+* 1Week=>1Day=>1Hourのフラクタルスプリントを採用して開発を進めました
 
 
 <img width="500" src="https://user-images.githubusercontent.com/40158101/98358505-2982eb00-206a-11eb-9510-9427e248ec8b.png">
@@ -105,5 +110,5 @@ markdown形式で投稿に対する説明を記述できます。
 
 ### 独自技術
 #### ハッカソンで開発した独自機能・技術
-* 独自で開発したものの内容をこちらに記載してください
-* 特に力を入れた部分をファイルリンク、またはcommit_idを記載してください。
+* ユーザ情報と投稿情報を相互に結び付けるデータベース構造
+* GitHub情報を利用した投票数設定
