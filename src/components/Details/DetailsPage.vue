@@ -3,8 +3,11 @@
     <CustomHeader/>
     <b-container id="contents-container">
     <!-- 投稿者情報蘭 -->
-      {{contributor}}
-      {{periodOfGitHub}}
+      <div v-on:click="toProfilePage" id="user-text-container">
+          <div id="user-name-text"> {{contributor.name}} {{periodOfGitHub}}</div>
+      </div> 
+      <!-- {{contributor}} -->
+      <!-- {{periodOfGitHub}} -->
       <!-- タイトル欄 -->
       <div class="title-container">
         <div v-if="title != undefined" class="h1">{{title}}</div>
@@ -59,7 +62,7 @@ export default {
       candidate: "",
       selectedIndex: "",
       docID: "",
-      contributor: "",
+      contributor: [],
       periodOfGitHub: "",
       pollOfUser: 0,
       userExists: false,
@@ -94,12 +97,13 @@ export default {
     // 投稿のタイトル・詳細・投稿者を取得
     ref.get().then(doc => {
       if(doc.exists){
+        this.contributor.userID = doc.data().userID
         this.title = doc.data().title
         this.description = doc.data().description
         db.collection("Users").doc(doc.data().userID)
         .get().then(doc => {
           if(doc.exists){
-            this.contributor = doc.data().name
+            this.contributor.name = doc.data().name
             var createTime = doc.data().createAt.seconds
             var now = new Date()
             var milliDiffTime = now.getTime() - new Date(createTime * 1000).getTime()
@@ -303,7 +307,15 @@ export default {
           }
         })
       })
-    }
+    },
+    toProfilePage: function(){
+      if(this.$route.path == "/profile"){
+        // ページリロード
+        // this.$router.go({ name: 'ProfilePage' })
+      } else{
+        this.$router.push({name: 'ProfilePage', params: {userID: this.contributor.userID}});
+      }
+    },
   },
 }
 </script>

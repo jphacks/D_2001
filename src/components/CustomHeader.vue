@@ -139,6 +139,7 @@ export default {
         // ページリロード
         // this.$router.go({ name: 'ProfilePage' })
       } else{
+        console.log(this.userID)
         this.$router.push({name: 'ProfilePage', params: {userID: this.userID}});
       }
     },
