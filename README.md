@@ -5,7 +5,7 @@
 
 # name_it
 
-[![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2020/09/JPHACKS2020_ogp.jpg)](https://www.youtube.com/watch?v=G5rULR53uMk)
+[![name_it](doc/name_it.png)](https://youtu.be/6HeX8ccLHQo)
 
 ## 製品概要
 　
