@@ -3,8 +3,8 @@
     <CustomHeader/>
     <b-container id="contents-container">
     <!-- 投稿者情報蘭 -->
-      <div v-on:click="toProfilePage" id="user-text-container">
-          <div id="user-name-text"> {{contributor.name}} {{periodOfGitHub}}</div>
+      <div v-on:click="toProfilePage" id="user-text-container" class="h5">
+          <div id="user-name-text"> ユーザー名 : {{contributor.name}} <br> {{periodOfGitHub}}</div>
       </div> 
       <!-- {{contributor}} -->
       <!-- {{periodOfGitHub}} -->
@@ -325,6 +325,10 @@ export default {
   padding: 30px;
   margin-top: 30px;
   background-color: #FFFFFF;
+}
+
+#user-text-container{
+  cursor: pointer;
 }
 
 .section-container {
