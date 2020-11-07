@@ -47,6 +47,9 @@ export default {
       periodOfGitHub: "",
     }
   },
+  props:[
+    "userID"
+  ],
   computed:{
     getUserName(){
       return this.$store.getters.userName
@@ -59,11 +62,20 @@ export default {
     }
   },
   mounted: function(){
-    // ユーザー名の取得
-    this.userName = this.getUserName
-    var userID = this.getUserID
-    // GitHub歴の取得
-    this.periodOfGitHub = this.getPeriodOfGitHub
+    console.log(this.userID)
+    db.collection("Users").doc(this.userID).get().then(doc => {
+      if(doc.exists){
+        // ユーザー名の取得
+        this.userName = doc.data().name
+        // GitHub歴の取得
+        var now = new Date()
+        var milliDiffTime = now.getTime() - new Date(doc.data().createAt.seconds * 1000).getTime()
+        var diffYear = Math.floor(milliDiffTime / 1000 / 60 / 60 / 24 / 365)
+        this.periodOfGitHub = diffYear
+      }  
+    })
+    // ユーザーIDの取得
+    var userID = this.userID
     //自分の投稿一覧を取得する
     var ref = db.collection('Questions').orderBy('time', 'desc')
     var staredRef = db.collection("Users").doc(userID).collection("Questions")

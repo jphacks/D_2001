@@ -4,7 +4,7 @@
     <div v-for="(comment, index) in comments" v-bind:key="index">
       <div class="comment-container">
         <div class="comment-title-container">
-          <div v-text="comment.userName" class="user-name-text"></div>
+          <div v-text="comment.userName" v-on:click="toProfilePage(comment.userID)" class="user-name-text"></div>
           <div v-text="comment.time" class="time-text"></div>
         </div>
         <div v-text="comment.text" class="comment-text"></div>
@@ -33,8 +33,8 @@ export default {
     "userID"
   ],
   computed:{
-    getUserName(){
-      return this.$store.getters.userName
+    getUserID(){
+      return this.$store.getters.userID
     }
   },
   mounted: function(){
@@ -48,12 +48,21 @@ export default {
       }
       snapshot.forEach(doc => {
         //コメント情報を配列で所持する
-        var commentData = {
-          text: doc.data().comment,
-          userName: doc.data().userName + "さん",
-          time: this.formatDate(new Date(doc.data().time.seconds * 1000)),
-        }
-        this.comments.push(commentData)
+        var otherUserID = doc.data().userID
+        var otherUserName
+        db.collection('Users').doc(doc.data().userID).get().then(snapshot =>{
+          if(snapshot.exists){
+            otherUserName = snapshot.data().name
+            console.log(otherUserName)
+            var commentData = {
+              text: doc.data().comment,
+              userID: otherUserID,
+              userName: otherUserName + "さん",
+              time: this.formatDate(new Date(doc.data().time.seconds * 1000)),
+            }
+            this.comments.push(commentData)
+          }
+        })
       });
     })
   },
@@ -68,7 +77,7 @@ export default {
         db.collection('Questions').doc(this.docID).collection('Comments').add({
           comment: this.commentText,
           time: new Date(),
-          userName: this.getUserName,
+          userID: this.getUserID,
         })
         .then(() => {
             console.log("Document successfully written!")
@@ -92,6 +101,14 @@ export default {
       var h = ('00' + dt.getHours()).slice(-2)
       var min = ('00' + dt.getMinutes()).slice(-2)
       return (y + '/' + m + '/' + d + ' ' + h + ':' + min)
+    },
+    toProfilePage: function(userID){
+      if(this.$route.path == "/profile"){
+        // ページリロード
+        // this.$router.go({ name: 'ProfilePage' })
+      } else{
+        this.$router.push({name: 'ProfilePage', params: {userID: userID}});
+      }
     },
   },
 }
@@ -117,6 +134,7 @@ export default {
 .user-name-text{
   margin-right: auto;
   -webkit-line-clamp: 1;
+  cursor: pointer;
 }
 
 .time-text{

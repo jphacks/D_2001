@@ -30,6 +30,7 @@ export default new Router({
       path: '/profile',
       name: 'ProfilePage',
       component: ProfilePage,
+      props: true
     },
   ]
 })
