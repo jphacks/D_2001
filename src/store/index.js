@@ -8,6 +8,7 @@ const initialState = {
   docID: '',
   userID: '',
   userName: '',
+  periodOfGitHub: '',
 }
 
 const store = new Vuex.Store({
@@ -26,6 +27,9 @@ const store = new Vuex.Store({
     },
     userName(state){
       return state.userName
+    },
+    periodOfGitHub(state){
+      return state.periodOfGitHub
     }
   },
 
@@ -41,6 +45,9 @@ const store = new Vuex.Store({
     },
     setUserName(state, payload){
       state.userName = payload
+    },
+    setPeriodOfGitHub(state, payload){
+      state.periodOfGitHub = payload
     }
   },
 
@@ -54,6 +61,9 @@ const store = new Vuex.Store({
     },
     updateUserName({commit}, userName){
       commit('setUserName', userName)
+    },
+    updatePeriodOfGitHub({commit}, periodOfGitHub){
+      commit('setPeriodOfGitHub', periodOfGitHub)
     }
   },
 
