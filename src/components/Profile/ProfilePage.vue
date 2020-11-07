@@ -47,6 +47,9 @@ export default {
       periodOfGitHub: "",
     }
   },
+  props:[
+    "userID"
+  ],
   computed:{
     getUserName(){
       return this.$store.getters.userName
@@ -61,7 +64,7 @@ export default {
   mounted: function(){
     // ユーザー名の取得
     this.userName = this.getUserName
-    var userID = this.getUserID
+    var userID = this.userID
     // GitHub歴の取得
     this.periodOfGitHub = this.getPeriodOfGitHub
     //自分の投稿一覧を取得する
