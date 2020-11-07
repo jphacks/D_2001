@@ -33,8 +33,8 @@ export default {
     "userID"
   ],
   computed:{
-    getUserName(){
-      return this.$store.getters.userName
+    getUserID(){
+      return this.$store.getters.userID
     }
   },
   mounted: function(){
@@ -77,7 +77,7 @@ export default {
         db.collection('Questions').doc(this.docID).collection('Comments').add({
           comment: this.commentText,
           time: new Date(),
-          userName: this.getUserName,
+          userID: this.getUserID,
         })
         .then(() => {
             console.log("Document successfully written!")
@@ -134,6 +134,7 @@ export default {
 .user-name-text{
   margin-right: auto;
   -webkit-line-clamp: 1;
+  cursor: pointer;
 }
 
 .time-text{
